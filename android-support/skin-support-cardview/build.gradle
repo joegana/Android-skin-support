@@ -25,10 +25,10 @@ dependencies {
 }
 
 ext {
-    publishVersion = rootProject.skinAndroidSupportVersion
-    publishGroup = rootProject.skinAndroidSupportSkinGroup
+    publishVersion = rootProject.skinSupportVersion
     moduleName = "skin-support-cardview"
     descContent = "CardView-v7 换肤支持包"
 }
 
-apply from: '../../publishing_maven.gradle'
+//apply from: '../../publishing_maven.gradle'
+apply from: '../../publishing_localmaven.gradle'

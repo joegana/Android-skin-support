@@ -22,12 +22,16 @@ import java.lang.reflect.Method;
 import java.util.Map;
 
 import skin.support.SkinCompatManager;
+import skin.support.widget.SkinAppCompatFitWindowsFrameLayout;
+import skin.support.widget.SkinAppCompatFitWindowsLinearLayout;
+import skin.support.widget.SkinAppCompatLinearLayout;
 import skin.support.widget.SkinCompatAutoCompleteTextView;
 import skin.support.widget.SkinCompatButton;
 import skin.support.widget.SkinCompatCheckBox;
 import skin.support.widget.SkinCompatCheckedTextView;
 import skin.support.widget.SkinCompatEditText;
 import skin.support.widget.SkinCompatFrameLayout;
+import skin.support.widget.SkinCompatHorizontalScrollView;
 import skin.support.widget.SkinCompatImageButton;
 import skin.support.widget.SkinCompatImageView;
 import skin.support.widget.SkinCompatLinearLayout;
@@ -36,6 +40,7 @@ import skin.support.widget.SkinCompatProgressBar;
 import skin.support.widget.SkinCompatRadioButton;
 import skin.support.widget.SkinCompatRadioGroup;
 import skin.support.widget.SkinCompatRatingBar;
+import skin.support.widget.SkinCompatRecyclerView;
 import skin.support.widget.SkinCompatRelativeLayout;
 import skin.support.widget.SkinCompatScrollView;
 import skin.support.widget.SkinCompatSeekBar;
@@ -43,6 +48,7 @@ import skin.support.widget.SkinCompatSpinner;
 import skin.support.widget.SkinCompatTextView;
 import skin.support.widget.SkinCompatToolbar;
 import skin.support.widget.SkinCompatView;
+import skin.support.widget.SkinSwitchCompat;
 
 /**
  * Created by ximsfei on 17-1-9.
@@ -190,6 +196,9 @@ public class SkinCompatViewInflater {
             case "ScrollView":
                 view = new SkinCompatScrollView(context, attrs);
                 break;
+            case "HorizontalScrollView":
+                view = new SkinCompatHorizontalScrollView(context, attrs);
+                break;
         }
         return view;
     }
@@ -197,8 +206,62 @@ public class SkinCompatViewInflater {
     private View createViewFromV7(Context context, String name, AttributeSet attrs) {
         View view = null;
         switch (name) {
+            case "android.support.v7.widget.AppCompatTextView":
+                view = new SkinCompatTextView(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatImageView":
+                view = new SkinCompatImageView(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatButton":
+                view = new SkinCompatButton(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatEditText":
+                view = new SkinCompatEditText(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatSpinner":
+                view = new SkinCompatSpinner(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatImageButton":
+                view = new SkinCompatImageButton(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatCheckBox":
+                view = new SkinCompatCheckBox(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatRadioButton":
+                view = new SkinCompatRadioButton(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatCheckedTextView":
+                view = new SkinCompatCheckedTextView(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatAutoCompleteTextView":
+                view = new SkinCompatAutoCompleteTextView(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatMultiAutoCompleteTextView":
+                view = new SkinCompatMultiAutoCompleteTextView(context, attrs);
+                break;
             case "android.support.v7.widget.Toolbar":
                 view = new SkinCompatToolbar(context, attrs);
+                break;
+            case "android.support.v7.widget.LinearLayoutCompat":
+                view = new SkinAppCompatLinearLayout(context, attrs);
+                break;
+            case "android.support.v7.widget.FitWindowsFrameLayout":
+                view = new SkinAppCompatFitWindowsFrameLayout(context, attrs);
+                break;
+            case "android.support.v7.widget.FitWindowsLinearLayout":
+                view = new SkinAppCompatFitWindowsLinearLayout(context, attrs);
+                break;
+            case "android.support.v7.widget.SwitchCompat":
+                view = new SkinSwitchCompat(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatRatingBar":
+                view = new SkinCompatRatingBar(context, attrs);
+                break;
+            case "android.support.v7.widget.AppCompatSeekBar":
+                view = new SkinCompatSeekBar(context, attrs);
+                break;
+            case "android.support.v7.widget.RecyclerView":
+                view = new SkinCompatRecyclerView(context, attrs);
                 break;
         }
         return view;

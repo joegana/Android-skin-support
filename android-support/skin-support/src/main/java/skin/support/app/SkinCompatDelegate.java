@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.v4.view.LayoutInflaterFactory;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.VectorEnabledTintResources;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewParent;
 
@@ -21,7 +21,7 @@ import skin.support.widget.SkinCompatSupportable;
  * Created by ximsfei on 2017/1/9.
  */
 
-public class SkinCompatDelegate implements LayoutInflaterFactory {
+public class SkinCompatDelegate implements LayoutInflater.Factory2 {
     private final Context mContext;
     private SkinCompatViewInflater mSkinCompatViewInflater;
     private List<WeakReference<SkinCompatSupportable>> mSkinHelpers = new ArrayList<>();
@@ -103,9 +103,17 @@ public class SkinCompatDelegate implements LayoutInflaterFactory {
         if (mSkinHelpers != null && !mSkinHelpers.isEmpty()) {
             for (WeakReference ref : mSkinHelpers) {
                 if (ref != null && ref.get() != null) {
-                    ((SkinCompatSupportable) ref.get()).applySkin();
+                    SkinCompatSupportable ss = (SkinCompatSupportable) ref.get();
+                    if(ss != null){
+                        ss.applySkin();
+                    }
                 }
             }
         }
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        return null;
     }
 }

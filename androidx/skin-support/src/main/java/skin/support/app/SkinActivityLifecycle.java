@@ -4,15 +4,21 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 
+import androidx.lifecycle.Lifecycle;
+
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.WeakHashMap;
 
 import skin.support.SkinCompatManager;
 import skin.support.annotation.Skinable;
 import skin.support.content.res.SkinCompatResources;
+import skin.support.content.res.SkinCompatV7ThemeUtils;
 import skin.support.observe.SkinObservable;
 import skin.support.observe.SkinObserver;
 import skin.support.utils.Slog;
@@ -28,6 +34,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
     private static volatile SkinActivityLifecycle sInstance = null;
     private WeakHashMap<Context, SkinCompatDelegate> mSkinDelegateMap;
     private WeakHashMap<Context, LazySkinObserver> mSkinObserverMap;
+    private WeakHashMap<Context, Lifecycle.Event> mActivityStateMap;
     /**
      * 用于记录当前Activity，在换肤后，立即刷新当前Activity以及非Activity创建的View。
      */
@@ -52,8 +59,10 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
 
     @Override
     public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
+        putActivityStateEvent(activity, Lifecycle.Event.ON_CREATE);
         if (isContextSkinEnable(activity)) {
             installLayoutFactory(activity);
+            updateStatusBarColor(activity);
             updateWindowBackground(activity);
             if (activity instanceof SkinCompatSupportable) {
                 ((SkinCompatSupportable) activity).applySkin();
@@ -63,11 +72,12 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
 
     @Override
     public void onActivityStarted(Activity activity) {
-
+        putActivityStateEvent(activity, Lifecycle.Event.ON_START);
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
+        putActivityStateEvent(activity, Lifecycle.Event.ON_RESUME);
         mCurActivityRef = new WeakReference<>(activity);
         if (isContextSkinEnable(activity)) {
             LazySkinObserver observer = getObserver(activity);
@@ -78,10 +88,12 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
 
     @Override
     public void onActivityPaused(Activity activity) {
+        putActivityStateEvent(activity, Lifecycle.Event.ON_PAUSE);
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
+        putActivityStateEvent(activity, Lifecycle.Event.ON_STOP);
 
     }
 
@@ -97,6 +109,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
             mSkinObserverMap.remove(activity);
             mSkinDelegateMap.remove(activity);
         }
+        mActivityStateMap.remove(activity);
     }
 
     private void installLayoutFactory(Context context) {
@@ -121,6 +134,18 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
         return mSkinDelegate;
     }
 
+    public SkinObserver acquireObserver(final Context context){
+        return mSkinObserverMap.get(context);
+    }
+
+    public ArrayList<Context> whoHasObservers(){
+         ArrayList<Context> contexts = new ArrayList<>();
+         for(Map.Entry<Context,LazySkinObserver> entry : mSkinObserverMap.entrySet()){
+             contexts.add(entry.getKey());
+         }
+         return contexts;
+    }
+
     private LazySkinObserver getObserver(final Context context) {
         if (mSkinObserverMap == null) {
             mSkinObserverMap = new WeakHashMap<>();
@@ -131,6 +156,30 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
             mSkinObserverMap.put(context, observer);
         }
         return observer;
+    }
+
+    private void  putActivityStateEvent(final Context context,Lifecycle.Event event){
+        if(mActivityStateMap == null){
+            mActivityStateMap = new WeakHashMap<>();
+        }
+        mActivityStateMap.put(context,event);
+    }
+
+    private Lifecycle.Event getActivityStateEvent(final Context context){
+        return mActivityStateMap.get(context);
+    }
+
+    private void updateStatusBarColor(Activity activity) {
+        if (SkinCompatManager.getInstance().isSkinStatusBarColorEnable()
+                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            int statusBarColorResId = SkinCompatThemeUtils.getStatusBarColorResId(activity);
+            int colorPrimaryDarkResId = SkinCompatV7ThemeUtils.getColorPrimaryDarkResId(activity);
+            if (checkResourceId(statusBarColorResId) != INVALID_ID) {
+                activity.getWindow().setStatusBarColor(SkinCompatResources.getColor(activity, statusBarColorResId));
+            } else if (checkResourceId(colorPrimaryDarkResId) != INVALID_ID) {
+                activity.getWindow().setStatusBarColor(SkinCompatResources.getColor(activity, colorPrimaryDarkResId));
+            }
+        }
     }
 
     private void updateWindowBackground(Activity activity) {
@@ -161,14 +210,8 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
 
         @Override
         public void updateSkin(SkinObservable observable, Object o) {
-            // 当前Activity，或者非Activity，立即刷新，否则延迟到下次onResume方法中刷新。
-            if (mCurActivityRef == null
-                    || mContext == mCurActivityRef.get()
-                    || !(mContext instanceof Activity)) {
-                updateSkinForce();
-            } else {
-                mMarkNeedUpdate = true;
-            }
+            //强制刷新所有需要刷新的View
+            updateSkinForce();
         }
 
         void updateSkinIfNeeded() {
@@ -185,6 +228,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
                 return;
             }
             if (mContext instanceof Activity && isContextSkinEnable(mContext)) {
+                updateStatusBarColor((Activity) mContext);
                 updateWindowBackground((Activity) mContext);
             }
             getSkinDelegate(mContext).applySkin();

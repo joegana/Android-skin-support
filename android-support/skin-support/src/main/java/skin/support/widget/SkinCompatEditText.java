@@ -1,6 +1,7 @@
 package skin.support.widget;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.support.annotation.DrawableRes;
 import android.support.v7.appcompat.R;
 import android.support.v7.widget.AppCompatEditText;
@@ -84,5 +85,11 @@ public class SkinCompatEditText extends AppCompatEditText implements SkinCompatS
             mTextHelper.applySkin();
         }
     }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+    }
+
 
 }

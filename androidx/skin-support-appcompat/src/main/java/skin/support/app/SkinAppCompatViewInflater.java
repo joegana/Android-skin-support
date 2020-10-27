@@ -1,10 +1,10 @@
 package skin.support.app;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
-
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.appcompat.widget.TintContextWrapper;
@@ -17,12 +17,14 @@ import android.view.ViewParent;
 import skin.support.appcompat.R;
 import skin.support.content.res.SkinCompatVectorResources;
 import skin.support.utils.Slog;
+import skin.support.widget.SkinAppCompatLinearLayout;
 import skin.support.widget.SkinCompatAutoCompleteTextView;
 import skin.support.widget.SkinCompatButton;
 import skin.support.widget.SkinCompatCheckBox;
 import skin.support.widget.SkinCompatCheckedTextView;
 import skin.support.widget.SkinCompatEditText;
 import skin.support.widget.SkinCompatFrameLayout;
+import skin.support.widget.SkinCompatHorizontalScrollView;
 import skin.support.widget.SkinCompatImageButton;
 import skin.support.widget.SkinCompatImageView;
 import skin.support.widget.SkinCompatLinearLayout;
@@ -31,6 +33,7 @@ import skin.support.widget.SkinCompatProgressBar;
 import skin.support.widget.SkinCompatRadioButton;
 import skin.support.widget.SkinCompatRadioGroup;
 import skin.support.widget.SkinCompatRatingBar;
+import skin.support.widget.SkinCompatRecyclerView;
 import skin.support.widget.SkinCompatRelativeLayout;
 import skin.support.widget.SkinCompatScrollView;
 import skin.support.widget.SkinCompatSeekBar;
@@ -38,6 +41,7 @@ import skin.support.widget.SkinCompatSpinner;
 import skin.support.widget.SkinCompatTextView;
 import skin.support.widget.SkinCompatToolbar;
 import skin.support.widget.SkinCompatView;
+import skin.support.widget.SkinSwitchCompat;
 
 public class SkinAppCompatViewInflater implements SkinLayoutInflater, SkinWrapper {
     private static final String LOG_TAG = "SkinAppCompatViewInflater";
@@ -122,6 +126,9 @@ public class SkinAppCompatViewInflater implements SkinLayoutInflater, SkinWrappe
             case "ScrollView":
                 view = new SkinCompatScrollView(context, attrs);
                 break;
+            case "HorizontalScrollView":
+                view = new SkinCompatHorizontalScrollView(context, attrs);
+                break;
             default:
                 break;
         }
@@ -131,15 +138,61 @@ public class SkinAppCompatViewInflater implements SkinLayoutInflater, SkinWrappe
     private View createViewFromV7(Context context, String name, AttributeSet attrs) {
         View view = null;
         switch (name) {
-            case "androidx.appcompat.widget.Toolbar":
+            case "androidx.appcompat.widget.AppCompatButton": {
+                view = new SkinCompatButton(context, attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatTextView":{
+                view = new SkinCompatTextView(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatCheckBox":{
+                view = new SkinCompatCheckBox(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatCheckedTextView": {
+                view = new SkinCompatCheckedTextView(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatEditText": {
+                view = new SkinCompatEditText(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatImageButton": {
+                view = new SkinCompatImageButton(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatImageView": {
+                view = new SkinCompatImageView(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatMultiAutoCompleteTextView":{
+                view = new SkinCompatMultiAutoCompleteTextView(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatRadioButton":{
+                view = new SkinCompatRadioButton(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatRatingBar":{
+                view = new SkinCompatRatingBar(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatSeekBar":{
+                view = new SkinCompatSeekBar(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.AppCompatSpinner":{
+                view = new SkinCompatSpinner(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.Toolbar": {
                 view = new SkinCompatToolbar(context, attrs);
-                break;
+            }break;
+            case "androidx.appcompat.widget.SwitchCompat": {
+                view = new SkinSwitchCompat(context, attrs);
+            } break;
+            case "androidx.recyclerview.widget.RecyclerView":{
+                view = new SkinCompatRecyclerView(context,attrs);
+            }break;
+            case "androidx.appcompat.widget.LinearLayoutCompat":{
+                view = new SkinAppCompatLinearLayout(context,attrs);
+            }break;
             default:
                 break;
         }
         return view;
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public Context wrapContext(Context context, View parent, AttributeSet attrs) {
         final boolean isPre21 = Build.VERSION.SDK_INT < 21;
@@ -154,6 +207,7 @@ public class SkinAppCompatViewInflater implements SkinLayoutInflater, SkinWrappe
         }
         boolean readAndroidTheme = isPre21; /* Only read android:theme pre-L (L+ handles this anyway) */
         boolean readAppTheme = true; /* Read read app:theme as a fallback at all times for legacy reasons */
+        @SuppressLint("RestrictedApi")
         boolean wrapContext = VectorEnabledTintResources.shouldBeUsed(); /* Only tint wrap the context if enabled */
 
         // We can emulate Lollipop's android:theme attribute propagating down the view hierarchy

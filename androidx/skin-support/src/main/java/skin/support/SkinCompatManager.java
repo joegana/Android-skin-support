@@ -24,6 +24,7 @@ import skin.support.load.SkinBuildInLoader;
 import skin.support.load.SkinNoneLoader;
 import skin.support.load.SkinPrefixBuildInLoader;
 import skin.support.observe.SkinObservable;
+import skin.support.observe.SkinObserver;
 import skin.support.utils.SkinPreference;
 import skin.support.content.res.SkinCompatResources;
 
@@ -35,6 +36,7 @@ public class SkinCompatManager extends SkinObservable {
     private static volatile SkinCompatManager sInstance;
     private final Object mLock = new Object();
     private final Context mAppContext;
+    private  SkinActivityLifecycle skinActivityLifecycle;
     private boolean mLoading = false;
     private List<SkinWrapper> mWrappers = new ArrayList<>();
     private List<SkinLayoutInflater> mInflaters = new ArrayList<>();
@@ -163,6 +165,23 @@ public class SkinCompatManager extends SkinObservable {
         SkinActivityLifecycle.init(application);
         return sInstance;
     }
+
+    public SkinObserver getSkinObserver(Context mContext){
+        SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
+        if(instance != null){
+            return instance.acquireObserver(mContext);
+        }
+        return null ;
+    }
+
+    public  ArrayList<Context> whoHasObservers(){
+        SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
+        if(instance != null){
+            return instance.whoHasObservers();
+        }
+        return null ;
+    }
+
 
     private SkinCompatManager(Context context) {
         mAppContext = context.getApplicationContext();

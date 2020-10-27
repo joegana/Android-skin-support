@@ -22,9 +22,23 @@ android {
     }
 }
 
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier 'sources'
+}
+
+afterEvaluate {
+    tasks.matching {
+        (it.name.endsWith('artifactoryPublish'))
+    }.each { tk ->
+        tk.dependsOn('assembleRelease', 'generateSourcesJar')
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation project(':androidx:skin-support')
 }
 
@@ -41,4 +55,5 @@ ext {
     descContent = 'skin-support 基础控件换肤支持包'
 }
 
-apply from: '../../publishing_maven.gradle'
+//apply from: '../../publishing_maven.gradle'
+apply from: '../../publishing_localmaven.gradle'

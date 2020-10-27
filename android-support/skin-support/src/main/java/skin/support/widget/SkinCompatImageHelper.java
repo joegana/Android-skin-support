@@ -3,6 +3,7 @@ package skin.support.widget;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.ImageView;
 
 import skin.support.R;
@@ -55,6 +56,8 @@ public class SkinCompatImageHelper extends SkinCompatHelper {
             Drawable drawable = SkinCompatResources.getDrawableCompat(mView.getContext(), mSrcResId);
             if (drawable != null) {
                 mView.setImageDrawable(drawable);
+//                Log.d("applySkin","resId = " +mSrcResId + " "+drawable.getIntrinsicHeight() +" " +drawable.getIntrinsicWidth() + " "+drawable.getBounds());
+//                Log.d("applySkin","resId = " +mSrcResId + " "+mView.toString());
             }
         }
     }

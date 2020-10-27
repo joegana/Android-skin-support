@@ -7,7 +7,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import java.lang.reflect.Field;
 
 import skin.support.R;
 import skin.support.content.res.SkinCompatResources;
@@ -34,6 +38,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
     protected int mDrawableLeftResId = INVALID_ID;
     protected int mDrawableRightResId = INVALID_ID;
     protected int mDrawableTopResId = INVALID_ID;
+    protected int mCursorDrawableResId = INVALID_ID;
 
     public SkinCompatTextHelper(TextView view) {
         mView = view;
@@ -57,6 +62,9 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         }
         if (a.hasValue(R.styleable.SkinCompatTextHelper_android_drawableBottom)) {
             mDrawableBottomResId = a.getResourceId(R.styleable.SkinCompatTextHelper_android_drawableBottom, INVALID_ID);
+        }
+        if (a.hasValue(R.styleable.SkinCompatTextHelper_android_textCursorDrawable)) {
+            mCursorDrawableResId = a.getResourceId(R.styleable.SkinCompatTextHelper_android_textCursorDrawable, INVALID_ID);
         }
         a.recycle();
 
@@ -179,13 +187,86 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         }
     }
 
+    protected void applyTextCursorDrawableResource()
+    {
+        if(mCursorDrawableResId != INVALID_ID && mView instanceof EditText)
+        {
+            Class textViewCls =  mView.getClass();
+            while (textViewCls != TextView.class){
+                textViewCls =  textViewCls.getSuperclass();
+            }
+            if(textViewCls == TextView.class)
+            {
+                try {
+                    Field  fld = textViewCls.getDeclaredField("mEditor");
+                    if(fld != null)
+                    {
+                        fld.setAccessible(true);
+                        Object editorObj = fld.get(mView);
+                        if(editorObj != null)
+                        {
+                            Class editClass = editorObj.getClass();
+                            Field mCursorField = null;
+                            do {
+                                try {
+                                    mCursorField = editClass.getDeclaredField("mCursorDrawable");
+                                } catch (NoSuchFieldException e)
+                                {
+                                    editClass = editClass.getSuperclass();
+                                }
+                            }while (mCursorField == null && editClass != Object.class);
+
+                            if(mCursorField == null){
+                                editClass = editorObj.getClass();
+                                do {
+                                    try {
+                                        mCursorField = editClass.getDeclaredField("mDrawableForCursor");
+                                    } catch (NoSuchFieldException e)
+                                    {
+                                        editClass = editClass.getSuperclass();
+                                    }
+                                }while (mCursorField == null && editClass != Object.class);
+                            }
+
+                            if(mCursorField != null)
+                            {
+                                mCursorField.setAccessible(true);
+                                Object cursorObj = mCursorField.get(editorObj);
+                                Drawable textCursorDrawable = SkinCompatResources.getDrawableCompat(mView.getContext(), mCursorDrawableResId);
+                                if(cursorObj != null )
+                                {
+                                    if( cursorObj instanceof Drawable[]) {
+                                        Drawable[] drawables = (Drawable[]) cursorObj;
+                                        int lenght = drawables.length;
+                                        for (int i = 0; i < lenght; i++) {
+                                            drawables[i] = textCursorDrawable;
+                                        }
+                                    }else if(cursorObj instanceof  Drawable){
+                                        mCursorField.set(editorObj,textCursorDrawable);
+                                    }
+                                }else{
+                                    mCursorField.set(editorObj,textCursorDrawable);
+                                }
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                    Log.w(TAG,e+"");
+                }
+            }
+        }
+    }
+
     public int getTextColorResId() {
         return mTextColorResId;
     }
+
+
 
     public void applySkin() {
         applyCompoundDrawablesRelativeResource();
         applyTextColorResource();
         applyTextColorHintResource();
+        applyTextCursorDrawableResource();
     }
 }

@@ -17,6 +17,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.graphics.ColorUtils;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -581,11 +582,11 @@ final class SkinCompatDrawableManager {
         i++;
 
         states[i] = SkinCompatThemeUtils.PRESSED_STATE_SET;
-        colors[i] = compositeColors(colorControlHighlight, baseColor);
+        colors[i] = ColorUtils.compositeColors(colorControlHighlight, baseColor);
         i++;
 
         states[i] = SkinCompatThemeUtils.FOCUSED_STATE_SET;
-        colors[i] = compositeColors(colorControlHighlight, baseColor);
+        colors[i] = ColorUtils.compositeColors(colorControlHighlight, baseColor);
         i++;
 
         // Default enabled state

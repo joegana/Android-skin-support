@@ -23,6 +23,7 @@ import skin.support.load.SkinBuildInLoader;
 import skin.support.load.SkinNoneLoader;
 import skin.support.load.SkinPrefixBuildInLoader;
 import skin.support.observe.SkinObservable;
+import skin.support.observe.SkinObserver;
 import skin.support.utils.SkinPreference;
 import skin.support.content.res.SkinCompatResources;
 
@@ -32,8 +33,10 @@ public class SkinCompatManager extends SkinObservable {
     public static final int SKIN_LOADER_STRATEGY_BUILD_IN = 1;
     public static final int SKIN_LOADER_STRATEGY_PREFIX_BUILD_IN = 2;
     private static volatile SkinCompatManager sInstance;
+
     private final Object mLock = new Object();
     private final Context mAppContext;
+    private  SkinActivityLifecycle skinActivityLifecycle;
     private boolean mLoading = false;
     private List<SkinLayoutInflater> mInflaters = new ArrayList<>();
     private List<SkinLayoutInflater> mHookInflaters = new ArrayList<>();
@@ -161,6 +164,23 @@ public class SkinCompatManager extends SkinObservable {
         SkinActivityLifecycle.init(application);
         return sInstance;
     }
+
+    public  SkinObserver getSkinObserver(Context mContext){
+        SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
+        if(instance != null){
+            return instance.acquireObserver(mContext);
+        }
+        return null ;
+    }
+
+    public  ArrayList<Context> whoHasObservers(){
+        SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
+        if(instance != null){
+            return instance.whoHasObservers();
+        }
+        return null ;
+    }
+
 
     private SkinCompatManager(Context context) {
         mAppContext = context.getApplicationContext();
@@ -349,7 +369,7 @@ public class SkinCompatManager extends SkinObservable {
         if (loaderStrategy == null) {
             return null;
         }
-        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
+        return new SkinLoadTask(listener, loaderStrategy).execute(skinName);
     }
 
     private class SkinLoadTask extends AsyncTask<String, Void, String> {

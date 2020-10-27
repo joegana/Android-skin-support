@@ -51,7 +51,7 @@ public class SkinCompatUserThemeManager {
     private SkinCompatUserThemeManager() {
         try {
             startLoadFromSharedPreferences();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             mColorNameStateMap.clear();
             mDrawablePathAndAngleMap.clear();
             if (Slog.DEBUG) {

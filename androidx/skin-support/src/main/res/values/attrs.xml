@@ -19,6 +19,7 @@
         <attr name="android:drawableStart" />
         <attr name="android:drawableEnd" />
         <attr name="android:textAppearance" />
+        <attr name="android:textCursorDrawable"/>
     </declare-styleable>
 
     <declare-styleable name="SkinTextAppearance">
