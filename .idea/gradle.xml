@@ -4,9 +4,8 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="testRunner" value="PLATFORM" />
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -16,6 +15,7 @@
             <option value="$PROJECT_DIR$/androidx/skin-support-cardview" />
             <option value="$PROJECT_DIR$/androidx/skin-support-constraint-layout" />
             <option value="$PROJECT_DIR$/androidx/skin-support-design" />
+            <option value="$PROJECT_DIR$/androidx/skin-support-percentlayout" />
             <option value="$PROJECT_DIR$/demo" />
             <option value="$PROJECT_DIR$/demo/skin-androidx-app" />
             <option value="$PROJECT_DIR$/demo/skin-mobile" />
@@ -25,7 +25,7 @@
             <option value="$PROJECT_DIR$/third-part-support/flycotablayout" />
           </set>
         </option>
-        <option name="resolveModulePerSourceSet" value="false" />
+        <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

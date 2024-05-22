@@ -49,7 +49,7 @@ public class ZipActivity extends BaseActivity implements View.OnClickListener {
                 mToolbar.setTitle("图片来自Zip包");
                 break;
             case R.id.zip_theme:
-                SkinCompatManager.getInstance().loadSkin("night.skin", ZipSDCardLoader.SKIN_LOADER_STRATEGY_ZIP);
+                SkinCompatManager.getInstance().loadSkin("night_bk.skin", ZipSDCardLoader.SKIN_LOADER_STRATEGY_ZIP);
                 mToolbar.setTitle("图片来自Zip包");
                 break;
         }

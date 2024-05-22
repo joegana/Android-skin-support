@@ -46,7 +46,7 @@ public class SettingsFragment extends PreferenceFragment {
                 mSDCardNightModePreference.setChecked(false);
                 boolean boolValue = (boolean) newValue;
                 if (boolValue) {
-                    SkinCompatManager.getInstance().loadSkin("night.skin", null, SkinCompatManager.SKIN_LOADER_STRATEGY_ASSETS);
+                    SkinCompatManager.getInstance().loadSkin("night_bk.skin", null, SkinCompatManager.SKIN_LOADER_STRATEGY_ASSETS);
                 } else {
                     SkinCompatManager.getInstance().restoreDefaultTheme();
                 }
@@ -61,7 +61,7 @@ public class SettingsFragment extends PreferenceFragment {
                 mAssetsNightModePreference.setChecked(false);
                 boolean boolValue = (boolean) newValue;
                 if (boolValue) {
-                    SkinCompatManager.getInstance().loadSkin("night.skin", null, CustomSDCardLoader.SKIN_LOADER_STRATEGY_SDCARD);
+                    SkinCompatManager.getInstance().loadSkin("night_bk.skin", null, CustomSDCardLoader.SKIN_LOADER_STRATEGY_SDCARD);
                 } else {
                     SkinCompatManager.getInstance().restoreDefaultTheme();
                 }
