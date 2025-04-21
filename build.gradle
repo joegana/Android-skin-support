@@ -54,8 +54,10 @@ ext {
 
     skinAndroidSupportVersion = "3.2.8"
     skinAndroidSupportSkinGroup = "skin.support"
+
+
     skinAndroidXVersion = "4.0.7.0"
-    skinAndroidXSkinGroup = "skin.support"
+    skinAndroidXSkinGroup = "android.skin"
 
     artifactory_user='justin'
     artifactory_password='123456'

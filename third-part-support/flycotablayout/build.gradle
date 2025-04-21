@@ -38,12 +38,6 @@ dependencies {
     implementation project(':androidx:skin-support-appcompat')
 }
 
-ext {
-    publishVersion = '2.1.2.2'
-    publishGroup = rootProject.skinAndroidXSkinGroup
-    moduleName = 'flycotablayout'
-    descContent = 'H07000223/FlycoTabLayout 控件换肤支持包'
-}
 
 task generateSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
