@@ -8,7 +8,7 @@ publishing {
             groupId = group
             artifactId  moduleName
             version =  publishVersion
-//            artifact artifactFilePath
+            artifact artifactFilePath
             // 将 generateSourcesJar Task 生成的 sources.jar 也一并上传,只有预览版本上传源码
 //            if(version.endsWith('SNAPSHOT') || version.endsWith('snapshot')){
             artifact generateSourcesJar

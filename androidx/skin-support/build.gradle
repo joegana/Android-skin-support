@@ -4,7 +4,7 @@ ext {
     publishVersion = rootProject.skinAndroidXVersion
     publishGroup = rootProject.skinAndroidXSkinGroup
     artifactFilePath  = "${project.buildDir}/outputs/aar/${project.name}-" +
-            "${(publishGroup.endsWith('SNAPSHOT') || publishGroup.endsWith('snapshot'))?'debug':'release'}.aar"
+            "${(publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot'))?'debug':'release'}.aar"
     moduleName = 'skin-support'
     descContent = 'skin-support core'
 }
