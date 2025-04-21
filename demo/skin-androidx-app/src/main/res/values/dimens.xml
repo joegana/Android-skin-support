@@ -8,4 +8,6 @@
     <dimen name="spacing_normal">16dp</dimen>
     <dimen name="image_width">120dp</dimen>
     <dimen name="title_margin">20dp</dimen>
+
+    <dimen name="title_txt_size">16sp</dimen>
 </resources>

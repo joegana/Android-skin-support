@@ -8,4 +8,5 @@
     android:singleLine="true"
     android:gravity="center"
     android:textAlignment="inherit"
+    android:textSize="@dimen/title_txt_size"
     android:textColor="@color/text_color" />

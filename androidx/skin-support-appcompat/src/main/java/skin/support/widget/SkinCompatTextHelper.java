@@ -276,7 +276,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
 
         mTextSizeResId = checkResourceId(mTextSizeResId);
         if (mTextSizeResId != INVALID_ID) {
-            float size = SkinCompatResources.getDimension(mView.getContext(), mTextFontResId);
+            float size = SkinCompatResources.getDimension(mView.getContext(), mTextSizeResId);
             if(size != 0d){
                 mView.setTextSize(size);
             }
