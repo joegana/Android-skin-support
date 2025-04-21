@@ -4,11 +4,9 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.view.View;
-
 import com.ximsfei.skindemo.BaseActivity;
 import com.ximsfei.skindemo.R;
 import com.ximsfei.skindemo.loader.ZipSDCardLoader;
-
 import skin.support.SkinCompatManager;
 import skin.support.utils.SkinPreference;
 

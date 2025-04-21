@@ -3,9 +3,8 @@ package skin.support.circleimageview.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-
 import de.hdodenhof.circleimageview.CircleImageView;
-import skin.support.circleimageview.R;
+import skin.support.annotation.ColorRes;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatImageHelper;
@@ -19,7 +18,7 @@ import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 
 public class SkinCompatCircleImageView extends CircleImageView implements SkinCompatSupportable {
     private SkinCompatImageHelper mImageHelper;
-    private int mFillColorResId = INVALID_ID;
+    private int mBackgroundColorResId = INVALID_ID;
     private int mBorderColorResId = INVALID_ID;
 
     public SkinCompatCircleImageView(Context context) {
@@ -36,19 +35,19 @@ public class SkinCompatCircleImageView extends CircleImageView implements SkinCo
         mImageHelper = new SkinCompatImageHelper(this);
         mImageHelper.loadFromAttributes(attrs, defStyle);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CircleImageView, defStyle, 0);
-        mBorderColorResId = a.getResourceId(R.styleable.CircleImageView_civ_border_color, INVALID_ID);
-        mFillColorResId = a.getResourceId(R.styleable.CircleImageView_civ_fill_color, INVALID_ID);
+        TypedArray a = context.obtainStyledAttributes(attrs, de.hdodenhof.circleimageview.R.styleable.CircleImageView, defStyle, 0);
+        mBorderColorResId = a.getResourceId(de.hdodenhof.circleimageview.R.styleable.CircleImageView_civ_border_color, INVALID_ID);
+        mBackgroundColorResId = a.getResourceId(de.hdodenhof.circleimageview.R.styleable.CircleImageView_civ_circle_background_color, INVALID_ID);
         a.recycle();
         applyBorderColorResource();
-        applyFillColorResource();
+        applyBackgroundColorResource();
     }
 
-    private void applyFillColorResource() {
-        mFillColorResId = SkinCompatHelper.checkResourceId(mFillColorResId);
-        if (mFillColorResId != INVALID_ID) {
-            int color = SkinCompatResources.getColor(getContext(), mFillColorResId);
-            setFillColor(color);
+    private void applyBackgroundColorResource() {
+        mBackgroundColorResId = SkinCompatHelper.checkResourceId(mBackgroundColorResId);
+        if (mBackgroundColorResId != INVALID_ID) {
+            int color = SkinCompatResources.getColor(getContext(), mBackgroundColorResId);
+            setBackgroundColor(color);
         }
     }
 
@@ -68,17 +67,14 @@ public class SkinCompatCircleImageView extends CircleImageView implements SkinCo
         }
     }
 
-    @Override
-    public void setBorderColorResource(int borderColorRes) {
-        super.setBorderColorResource(borderColorRes);
+    public void setBorderColorRes(@ColorRes  int borderColorRes) {
         mBorderColorResId = borderColorRes;
         applySkin();
     }
 
-    @Override
-    public void setFillColorResource(int fillColorRes) {
-        super.setFillColorResource(fillColorRes);
-        mFillColorResId = fillColorRes;
+
+    public void setCircleBackgroundColorResource(@ColorRes int fillColorRes) {
+        mBackgroundColorResId = fillColorRes;
         applySkin();
     }
 
@@ -88,7 +84,6 @@ public class SkinCompatCircleImageView extends CircleImageView implements SkinCo
             mImageHelper.applySkin();
         }
         applyBorderColorResource();
-        applyFillColorResource();
+        applyBackgroundColorResource();
     }
-
 }

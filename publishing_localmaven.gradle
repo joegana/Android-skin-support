@@ -2,27 +2,67 @@ apply plugin: 'com.jfrog.artifactory'
 apply plugin: 'maven-publish'
 
 group = "android.skin"
-
 publishing {
     publications {
         aar(MavenPublication) {
-            groupId =   group
+            groupId = group
             artifactId  moduleName
             version =  publishVersion
-            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
+//            artifact artifactFilePath
+            // 将 generateSourcesJar Task 生成的 sources.jar 也一并上传,只有预览版本上传源码
+//            if(version.endsWith('SNAPSHOT') || version.endsWith('snapshot')){
             artifact generateSourcesJar
+//            }
+            pom.withXml {
+                Map props = new HashMap<String,String>()
+                rootProject.allprojects.forEach{
+                    props.putAll(it.ext.properties)
+                }
+                def dependenciesNode = asNode().appendNode('dependencies')
+                List<ModuleDependency> depens = new ArrayList<>()
+                depens.addAll(
+                        configurations.getByName("implementation").allDependencies.withType(ModuleDependency))
+
+//                logger.log(LogLevel.WARN,props.toString())
+                if(props.containsKey("curFlavor")){
+                    if(!"${curFlavor}".isEmpty()){
+                        depens.addAll(
+                                configurations.getByName("${curFlavor}Implementation").allDependencies.withType(ModuleDependency))
+                    }
+                }
+
+                depens.forEach { ModuleDependency dp ->
+//                    logger.log(LogLevel.WARN,dp.toString())
+                    if (dp.version != "unspecified") { // 过滤项目内library引用
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', dp.group)
+                        dependencyNode.appendNode('artifactId', dp.name)
+                        dependencyNode.appendNode('version', dp.version)
+
+                        // for exclusions
+                        if (dp.excludeRules.size() > 0) {
+                            def exclusions = dependencyNode.appendNode('exclusions')
+                            dp.excludeRules.each { ExcludeRule ex ->
+                                def exclusion = exclusions.appendNode('exclusion')
+                                exclusion.appendNode('groupId', ex.group)
+                                exclusion.appendNode('artifactId', ex.module)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
 artifactory {
-    contextUrl  = "${artifactory_contextUrl}"
     publish {
+        contextUrl  = "${artifactory_contextUrl}"
         repository {
             // The Artifactory repository key to publish to
-            repoKey = publishVersion.endsWith('SNAPSHOT') ? 'mg-app-libs-snapshot' : 'mg-app-libs-release'
+            repoKey = (publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot'))  ? 'mg-app-libs-snapshot' : 'mg-app-libs-release'
             username = "${artifactory_user}" // The publisher user name
             password = "${artifactory_password}" // The publisher password
-            maven = true
+//            maven = true
         }
         defaults {
             publishArtifacts = true
@@ -31,11 +71,14 @@ artifactory {
             publishIvy = false //Publish generated Ivy descriptor files to Artifactory (true by default)
         }
     }
-    resolve {
-        repository {
-            repoKey = 'jcenter'
-            username = "${artifactory_user}" // The resolver user name
-            password = "${artifactory_password}" // The resolver password
-        }
-    }
+//    resolve {
+//        repository {
+//            repoKey = 'jcenter'
+//            username = "${artifactory_user}" // The resolver user name
+//            password = "${artifactory_password}" // The resolver password
+//        }
+//    }
 }
+
+
+

@@ -38,6 +38,9 @@ tasks.withType(Javadoc) {
 ext {
     publishVersion = rootProject.skinSupportVersion
     moduleName = 'skin-support'
+    artifactFilePath  = "${project.buildDir}/outputs/aar/${project.name}-" +
+            "${(publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot'))?'debug':'release'}.aar"
+
     descContent = 'skin-support 基础控件换肤支持包'
 }
 

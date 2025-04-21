@@ -4,12 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import com.google.android.material.tabs.TabLayout;
 import android.util.AttributeSet;
-
 import skin.support.content.res.SkinCompatResources;
 import skin.support.design.R;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
-
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 
 /**
@@ -31,31 +29,33 @@ public class SkinMaterialTabLayout extends TabLayout implements SkinCompatSuppor
 
     public SkinMaterialTabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TabLayout,
+        TypedArray a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.TabLayout,
                 defStyleAttr, 0);
 
-        mTabIndicatorColorResId = a.getResourceId(R.styleable.TabLayout_tabIndicatorColor, INVALID_ID);
+        mTabIndicatorColorResId = a.getResourceId(com.google.android.material.R.styleable.TabLayout_tabIndicatorColor, INVALID_ID);
 
-        int tabTextAppearance = a.getResourceId(R.styleable.TabLayout_tabTextAppearance, R.style.TextAppearance_Design_Tab);
+        int tabTextAppearance = a.getResourceId(
+                com.google.android.material.R.styleable.TabLayout_tabTextAppearance,
+                com.google.android.material.R.style.TextAppearance_Design_Tab);
 
         // Text colors/sizes come from the text appearance first
-        final TypedArray ta = context.obtainStyledAttributes(tabTextAppearance, R.styleable.SkinTextAppearance);
+        final TypedArray ta = context.obtainStyledAttributes(tabTextAppearance, skin.support.R.styleable.SkinTextAppearance);
         try {
-            mTabTextColorsResId = ta.getResourceId(R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
+            mTabTextColorsResId = ta.getResourceId(skin.support.R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
         } finally {
             ta.recycle();
         }
 
-        if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
+        if (a.hasValue(com.google.android.material.R.styleable.TabLayout_tabTextColor)) {
             // If we have an explicit text color set, use it instead
-            mTabTextColorsResId = a.getResourceId(R.styleable.TabLayout_tabTextColor, INVALID_ID);
+            mTabTextColorsResId = a.getResourceId(com.google.android.material.R.styleable.TabLayout_tabTextColor, INVALID_ID);
         }
 
-        if (a.hasValue(R.styleable.TabLayout_tabSelectedTextColor)) {
+        if (a.hasValue(com.google.android.material.R.styleable.TabLayout_tabSelectedTextColor)) {
             // We have an explicit selected text color set, so we need to make merge it with the
             // current colors. This is exposed so that developers can use theme attributes to set
             // this (theme attrs in ColorStateLists are Lollipop+)
-            mTabSelectedTextColorResId = a.getResourceId(R.styleable.TabLayout_tabSelectedTextColor, INVALID_ID);
+            mTabSelectedTextColorResId = a.getResourceId(com.google.android.material.R.styleable.TabLayout_tabSelectedTextColor, INVALID_ID);
         }
         a.recycle();
         applySkin();

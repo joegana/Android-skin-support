@@ -7,7 +7,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import android.util.AttributeSet;
 
 import skin.support.content.res.SkinCompatVectorResources;
-import skin.support.design.R;
 import skin.support.widget.SkinCompatBackgroundHelper;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
@@ -35,10 +34,10 @@ public class SkinMaterialCollapsingToolbarLayout extends CollapsingToolbarLayout
         super(context, attrs, defStyleAttr);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.CollapsingToolbarLayout, defStyleAttr,
-                R.style.Widget_Design_CollapsingToolbar);
-        mContentScrimResId = a.getResourceId(R.styleable.CollapsingToolbarLayout_contentScrim, INVALID_ID);
-        mStatusBarScrimResId = a.getResourceId(R.styleable.CollapsingToolbarLayout_statusBarScrim, INVALID_ID);
+                com.google.android.material.R.styleable.CollapsingToolbarLayout, defStyleAttr,
+                com.google.android.material.R.style.Widget_Design_CollapsingToolbar);
+        mContentScrimResId = a.getResourceId(com.google.android.material.R.styleable.CollapsingToolbarLayout_contentScrim, INVALID_ID);
+        mStatusBarScrimResId = a.getResourceId(com.google.android.material.R.styleable.CollapsingToolbarLayout_statusBarScrim, INVALID_ID);
         a.recycle();
         applyContentScrimResource();
         applyStatusBarScrimResource();

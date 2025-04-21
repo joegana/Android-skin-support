@@ -4,7 +4,6 @@ import android.content.Context;
 import androidx.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.View;
-
 import skin.support.widget.SkinCompatCardView;
 
 /**

@@ -6,11 +6,9 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
-
-import skin.support.appcompat.R;
+import androidx.appcompat.R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatVectorResources;
-
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 
 /**
@@ -43,13 +41,13 @@ public class SkinCompatToolbar extends Toolbar implements SkinCompatSupportable 
         int subtitleAp = a.getResourceId(R.styleable.Toolbar_subtitleTextAppearance, INVALID_ID);
         a.recycle();
         if (titleAp != INVALID_ID) {
-            a = context.obtainStyledAttributes(titleAp, R.styleable.SkinTextAppearance);
-            mTitleTextColorResId = a.getResourceId(R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
+            a = context.obtainStyledAttributes(titleAp, skin.support.R.styleable.SkinTextAppearance);
+            mTitleTextColorResId = a.getResourceId(skin.support.R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
             a.recycle();
         }
         if (subtitleAp != INVALID_ID) {
-            a = context.obtainStyledAttributes(subtitleAp, R.styleable.SkinTextAppearance);
-            mSubtitleTextColorResId = a.getResourceId(R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
+            a = context.obtainStyledAttributes(subtitleAp, skin.support.R.styleable.SkinTextAppearance);
+            mSubtitleTextColorResId = a.getResourceId(skin.support.R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
             a.recycle();
         }
         a = context.obtainStyledAttributes(attrs, R.styleable.Toolbar, defStyleAttr, 0);

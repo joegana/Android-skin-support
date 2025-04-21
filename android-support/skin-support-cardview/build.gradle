@@ -27,6 +27,8 @@ dependencies {
 ext {
     publishVersion = rootProject.skinSupportVersion
     moduleName = "skin-support-cardview"
+    artifactFilePath  = "${project.buildDir}/outputs/aar/${project.name}-" +
+            "${(publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot'))?'debug':'release'}.aar"
     descContent = "CardView-v7 换肤支持包"
 }
 

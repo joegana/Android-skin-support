@@ -1,8 +1,17 @@
 apply plugin: 'com.android.library'
 
+ext {
+    publishVersion = rootProject.skinAndroidXVersion
+    publishGroup = rootProject.skinAndroidXSkinGroup
+    moduleName = 'flycotablayout'
+    artifactFilePath  = "${project.buildDir}/outputs/aar/${project.name}-" +
+            "${(publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot'))?'debug':'release'}.aar"
+    descContent = 'flycotablayout 控件换肤支持包'
+}
+
 android {
     compileSdkVersion rootProject.compileSdkVersion
-
+    namespace "skin.support.flycotablayout"
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -15,13 +24,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    buildFeatures{
+        buildConfig = true
+    }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
-
-    implementation 'com.flyco.tablayout:FlycoTabLayout_Lib:2.1.2@aar'
+    implementation 'io.github.h07000223:flycoTabLayout:3.0.0'
     implementation project(':androidx:skin-support')
     implementation project(':androidx:skin-support-appcompat')
 }
@@ -33,4 +45,24 @@ ext {
     descContent = 'H07000223/FlycoTabLayout 控件换肤支持包'
 }
 
-apply from: '../../publishing_maven.gradle'
+task generateSourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    var src =  'sources'
+    archiveClassifier.convention(src)
+    archiveClassifier.set(src)
+}
+
+afterEvaluate {
+    logger.quiet("当前version:{}",publishVersion)
+    def snapShortVer = publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot')
+    tasks.matching {
+        (it.name.endsWith('artifactoryPublish') || it.name.endsWith('publishAarPublicationToMavenLocal'))
+    }.each { tk ->
+        tk.dependsOn("assemble${snapShortVer?'Debug':'Release'}", "generateSourcesJar")
+    }
+}
+
+
+
+//apply from: '../../publishing_maven.gradle'
+apply from: '../../publishing_localmaven.gradle'

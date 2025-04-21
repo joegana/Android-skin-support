@@ -7,10 +7,8 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.textfield.TextInputLayout;
 import android.util.AttributeSet;
 import android.widget.TextView;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-
 import skin.support.content.res.SkinCompatResources;
 import skin.support.design.R;
 import skin.support.widget.SkinCompatBackgroundHelper;
@@ -45,18 +43,19 @@ public class SkinMaterialTextInputLayout extends TextInputLayout implements Skin
         mBackgroundTintHelper = new SkinCompatBackgroundHelper(this);
         mBackgroundTintHelper.loadFromAttributes(attrs, defStyleAttr);
 
-        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
-        if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
+        final TypedArray a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.TextInputLayout,
+                defStyleAttr, com.google.android.material.R.style.Widget_Design_TextInputLayout);
+        if (a.hasValue(com.google.android.material.R.styleable.TextInputLayout_android_textColorHint)) {
             mDefaultTextColorResId = mFocusedTextColorResId =
-                    a.getResourceId(R.styleable.TextInputLayout_android_textColorHint, INVALID_ID);
+                    a.getResourceId(com.google.android.material.R.styleable.TextInputLayout_android_textColorHint, INVALID_ID);
             applyFocusedTextColorResource();
         }
 
-        int errorTextAppearance = a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, INVALID_ID);
+        int errorTextAppearance = a.getResourceId(com.google.android.material.R.styleable.TextInputLayout_errorTextAppearance, INVALID_ID);
         loadErrorTextColorResFromAttributes(errorTextAppearance);
-        int counterTextAppearance = a.getResourceId(R.styleable.TextInputLayout_counterTextAppearance, INVALID_ID);
+        int counterTextAppearance = a.getResourceId(com.google.android.material.R.styleable.TextInputLayout_counterTextAppearance, INVALID_ID);
         loadCounterTextColorResFromAttributes(counterTextAppearance);
-        mPasswordToggleResId = a.getResourceId(R.styleable.TextInputLayout_passwordToggleDrawable, INVALID_ID);
+        mPasswordToggleResId = a.getResourceId(com.google.android.material.R.styleable.TextInputLayout_passwordToggleDrawable, INVALID_ID);
         a.recycle();
     }
 
@@ -128,7 +127,7 @@ public class SkinMaterialTextInputLayout extends TextInputLayout implements Skin
 
     private void applyErrorTextColorResource() {
         mErrorTextColorResId = SkinCompatHelper.checkResourceId(mErrorTextColorResId);
-        if (mErrorTextColorResId != INVALID_ID && mErrorTextColorResId != R.color.design_error) {
+        if (mErrorTextColorResId != INVALID_ID && mErrorTextColorResId != com.google.android.material.R.color.design_error) {
             TextView errorView = getErrorView();
             if (errorView != null) {
                 errorView.setTextColor(SkinCompatResources.getColor(getContext(), mErrorTextColorResId));
@@ -171,7 +170,7 @@ public class SkinMaterialTextInputLayout extends TextInputLayout implements Skin
 
     private void applyFocusedTextColorResource() {
         mFocusedTextColorResId = SkinCompatHelper.checkResourceId(mFocusedTextColorResId);
-        if (mFocusedTextColorResId != INVALID_ID && mFocusedTextColorResId != R.color.abc_hint_foreground_material_light) {
+        if (mFocusedTextColorResId != INVALID_ID && mFocusedTextColorResId != com.google.android.material.R.color.abc_hint_foreground_material_light) {
             setFocusedTextColor(SkinCompatResources.getColorStateList(getContext(), mFocusedTextColorResId));
         } else if (getEditText() != null) {
             int textColorResId = INVALID_ID;

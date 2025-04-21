@@ -3,10 +3,9 @@ package skin.support.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
-
 import androidx.annotation.DrawableRes;
 import androidx.appcompat.widget.SwitchCompat;
-import skin.support.appcompat.R;
+import androidx.appcompat.R;
 import skin.support.content.res.SkinCompatResources;
 
 public class SkinSwitchCompat extends SwitchCompat implements SkinCompatSupportable {

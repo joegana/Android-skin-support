@@ -6,7 +6,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.util.AttributeSet;
 
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatImageHelper;
 import skin.support.widget.SkinCompatSupportable;
@@ -34,10 +33,10 @@ public class SkinMaterialFloatingActionButton extends FloatingActionButton imple
     public SkinMaterialFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.FloatingActionButton, defStyleAttr,
-                R.style.Widget_Design_FloatingActionButton);
-        mBackgroundTintResId = a.getResourceId(R.styleable.FloatingActionButton_backgroundTint, INVALID_ID);
-        mRippleColorResId = a.getResourceId(R.styleable.FloatingActionButton_rippleColor, INVALID_ID);
+                com.google.android.material.R.styleable.FloatingActionButton, defStyleAttr,
+                com.google.android.material.R.style.Widget_Design_FloatingActionButton);
+        mBackgroundTintResId = a.getResourceId(com.google.android.material.R.styleable.FloatingActionButton_backgroundTint, INVALID_ID);
+        mRippleColorResId = a.getResourceId(com.google.android.material.R.styleable.FloatingActionButton_rippleColor, INVALID_ID);
         a.recycle();
         applyBackgroundTintResource();
         applyRippleColorResource();

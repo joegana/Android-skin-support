@@ -2,6 +2,7 @@ package skin.support.load;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 
 import skin.support.SkinCompatManager;
@@ -37,6 +38,21 @@ public class SkinPrefixBuildInLoader implements SkinLoaderStrategy {
     @Override
     public Drawable getDrawable(Context context, String skinName, int resId) {
         return null;
+    }
+
+    @Override
+    public Typeface getFont(Context context, String skinName, int resId) {
+        return null;
+    }
+
+    @Override
+    public int getSize(Context context, String skinName, int resId) {
+        return 0;
+    }
+
+    @Override
+    public float getDimension(Context context, String skinName, int resId) {
+        return 0f;
     }
 
     @Override

@@ -6,10 +6,14 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.SparseArray;
+
+import androidx.annotation.DimenRes;
+import androidx.annotation.FontRes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -120,6 +124,35 @@ public class SkinCompatManager extends SkinObservable {
          * @return 返回对应Drawable。不需要拦截，则返回空
          */
         Drawable getDrawable(Context context, String skinName, int resId);
+
+
+        /**
+         * 开发者可以拦截应用中的资源ID，返回对应TypeFace。
+         * @param context
+         * @param skinName
+         * @param resId
+         * @return
+         */
+        Typeface getFont(Context context,String skinName,@FontRes  int resId);
+
+        /**
+         * 开发者可以拦截应用中的资源ID，返回对应 dimension size。
+         * @param context
+         * @param skinName
+         * @param resId
+         * @return
+         */
+        int getSize(Context context,String skinName,@DimenRes  int resId);
+
+        /**
+         * 开发者可以拦截应用中的资源ID，返回对应 dimension size。
+         * @param context
+         * @param skinName
+         * @param resId
+         * @return
+         */
+        float getDimension(Context context,String skinName,@DimenRes  int resId);
+
 
         /**
          * {@link #SKIN_LOADER_STRATEGY_NONE}

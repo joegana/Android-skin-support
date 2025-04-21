@@ -9,9 +9,7 @@ import androidx.annotation.NonNull;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-
 import skin.support.content.res.SkinCompatResources;
-import skin.support.design.R;
 import skin.support.widget.SkinCompatBackgroundHelper;
 import skin.support.widget.SkinCompatHelper;
 import skin.support.widget.SkinCompatSupportable;
@@ -45,16 +43,16 @@ public class SkinMaterialBottomNavigationView extends BottomNavigationView imple
         mBackgroundTintHelper = new SkinCompatBackgroundHelper(this);
         mBackgroundTintHelper.loadFromAttributes(attrs, defStyleAttr);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomNavigationView, defStyleAttr,
-                R.style.Widget_Design_BottomNavigationView);
+        TypedArray a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.BottomNavigationView, defStyleAttr,
+                com.google.android.material.R.style.Widget_Design_BottomNavigationView);
 
-        if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
-            mIconTintResId = a.getResourceId(R.styleable.BottomNavigationView_itemIconTint, INVALID_ID);
+        if (a.hasValue(com.google.android.material.R.styleable.BottomNavigationView_itemIconTint)) {
+            mIconTintResId = a.getResourceId(com.google.android.material.R.styleable.BottomNavigationView_itemIconTint, INVALID_ID);
         } else {
             mDefaultTintResId = resolveColorPrimary();
         }
-        if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
-            mTextColorResId = a.getResourceId(R.styleable.BottomNavigationView_itemTextColor, INVALID_ID);
+        if (a.hasValue(com.google.android.material.R.styleable.BottomNavigationView_itemTextColor)) {
+            mTextColorResId = a.getResourceId(com.google.android.material.R.styleable.BottomNavigationView_itemTextColor, INVALID_ID);
         } else {
             mDefaultTintResId = resolveColorPrimary();
         }
@@ -118,7 +116,7 @@ public class SkinMaterialBottomNavigationView extends BottomNavigationView imple
     private int resolveColorPrimary() {
         final TypedValue value = new TypedValue();
         if (!getContext().getTheme().resolveAttribute(
-                R.attr.colorPrimary, value, true)) {
+                android.R.attr.colorPrimary, value, true)) {
             return INVALID_ID;
         }
         return value.resourceId;

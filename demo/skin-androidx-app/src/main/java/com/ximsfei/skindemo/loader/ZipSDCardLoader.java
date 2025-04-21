@@ -10,7 +10,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
-
 import skin.support.load.SkinSDCardLoader;
 import skin.support.utils.SkinFileUtils;
 

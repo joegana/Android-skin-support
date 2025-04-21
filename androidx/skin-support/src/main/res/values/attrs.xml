@@ -27,6 +27,7 @@
         <attr name="android:textColor" />
         <attr name="android:textColorHint" />
         <attr name="android:textStyle" />
+        <attr name="android:font" />
         <attr name="android:typeface" />
         <attr name="textAllCaps" />
         <attr name="android:shadowColor" />

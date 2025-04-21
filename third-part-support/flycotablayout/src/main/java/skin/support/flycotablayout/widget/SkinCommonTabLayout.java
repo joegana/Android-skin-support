@@ -43,16 +43,16 @@ public class SkinCommonTabLayout extends CommonTabLayout implements SkinCompatSu
     }
 
     private void obtainAttributes(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.CommonTabLayout);
-        mIndicatorColorResId = ta.getResourceId(R.styleable.CommonTabLayout_tl_indicator_color, INVALID_ID);
+        TypedArray ta = context.obtainStyledAttributes(attrs, com.flyco.tablayout.R.styleable.CommonTabLayout);
+        mIndicatorColorResId = ta.getResourceId(com.flyco.tablayout.R.styleable.CommonTabLayout_tl_indicator_color, INVALID_ID);
         mIndicatorColorResId = SkinCompatHelper.checkResourceId(mIndicatorColorResId);
-        mUnderlineColorResId = ta.getResourceId(R.styleable.CommonTabLayout_tl_underline_color, INVALID_ID);
+        mUnderlineColorResId = ta.getResourceId(com.flyco.tablayout.R.styleable.CommonTabLayout_tl_underline_color, INVALID_ID);
         mUnderlineColorResId = SkinCompatHelper.checkResourceId(mUnderlineColorResId);
-        mDividerColorResId = ta.getResourceId(R.styleable.CommonTabLayout_tl_divider_color, INVALID_ID);
+        mDividerColorResId = ta.getResourceId(com.flyco.tablayout.R.styleable.CommonTabLayout_tl_divider_color, INVALID_ID);
         mDividerColorResId = SkinCompatHelper.checkResourceId(mDividerColorResId);
-        mTextSelectColorResId = ta.getResourceId(R.styleable.CommonTabLayout_tl_textSelectColor, INVALID_ID);
+        mTextSelectColorResId = ta.getResourceId(com.flyco.tablayout.R.styleable.CommonTabLayout_tl_textSelectColor, INVALID_ID);
         mTextSelectColorResId = SkinCompatHelper.checkResourceId(mTextSelectColorResId);
-        mTextUnselectColorResId = ta.getResourceId(R.styleable.CommonTabLayout_tl_textUnselectColor, INVALID_ID);
+        mTextUnselectColorResId = ta.getResourceId(com.flyco.tablayout.R.styleable.CommonTabLayout_tl_textUnselectColor, INVALID_ID);
         mTextUnselectColorResId = SkinCompatHelper.checkResourceId(mTextUnselectColorResId);
         ta.recycle();
         applyCommonTabLayoutResources();

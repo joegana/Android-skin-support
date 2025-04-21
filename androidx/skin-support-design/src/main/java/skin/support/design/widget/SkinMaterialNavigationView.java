@@ -47,32 +47,32 @@ public class SkinMaterialNavigationView extends NavigationView implements SkinCo
         mBackgroundTintHelper = new SkinCompatBackgroundHelper(this);
         mBackgroundTintHelper.loadFromAttributes(attrs, 0);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.NavigationView, defStyleAttr,
-                R.style.Widget_Design_NavigationView);
-        if (a.hasValue(R.styleable.NavigationView_itemIconTint)) {
-            mIconTintResId = a.getResourceId(R.styleable.NavigationView_itemIconTint, INVALID_ID);
+        TypedArray a = context.obtainStyledAttributes(attrs, com.google.android.material.R.styleable.NavigationView, defStyleAttr,
+                com.google.android.material.R.style.Widget_Design_NavigationView);
+        if (a.hasValue(com.google.android.material.R.styleable.NavigationView_itemIconTint)) {
+            mIconTintResId = a.getResourceId(com.google.android.material.R.styleable.NavigationView_itemIconTint, INVALID_ID);
         } else {
             mDefaultTintResId = SkinCompatV7ThemeUtils.getColorPrimaryResId(context);
         }
-        if (a.hasValue(R.styleable.NavigationView_itemTextAppearance)) {
-            int textAppearance = a.getResourceId(R.styleable.NavigationView_itemTextAppearance, INVALID_ID);
+        if (a.hasValue(com.google.android.material.R.styleable.NavigationView_itemTextAppearance)) {
+            int textAppearance = a.getResourceId(com.google.android.material.R.styleable.NavigationView_itemTextAppearance, INVALID_ID);
             if (textAppearance != INVALID_ID) {
-                TypedArray ap = context.obtainStyledAttributes(textAppearance, R.styleable.SkinTextAppearance);
-                if (ap.hasValue(R.styleable.SkinTextAppearance_android_textColor)) {
-                    mTextColorResId = ap.getResourceId(R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
+                TypedArray ap = context.obtainStyledAttributes(textAppearance, skin.support.R.styleable.SkinTextAppearance);
+                if (ap.hasValue(skin.support.R.styleable.SkinTextAppearance_android_textColor)) {
+                    mTextColorResId = ap.getResourceId(skin.support.R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
                 }
                 ap.recycle();
             }
         }
-        if (a.hasValue(R.styleable.NavigationView_itemTextColor)) {
-            mTextColorResId = a.getResourceId(R.styleable.NavigationView_itemTextColor, INVALID_ID);
+        if (a.hasValue(com.google.android.material.R.styleable.NavigationView_itemTextColor)) {
+            mTextColorResId = a.getResourceId(com.google.android.material.R.styleable.NavigationView_itemTextColor, INVALID_ID);
         } else {
             mDefaultTintResId = SkinCompatV7ThemeUtils.getColorPrimaryResId(context);
         }
         if (mTextColorResId == INVALID_ID) {
             mTextColorResId = SkinCompatThemeUtils.getTextColorPrimaryResId(context);
         }
-        mItemBackgroundResId = a.getResourceId(R.styleable.NavigationView_itemBackground, INVALID_ID);
+        mItemBackgroundResId = a.getResourceId(com.google.android.material.R.styleable.NavigationView_itemBackground, INVALID_ID);
         a.recycle();
         applyItemIconTintResource();
         applyItemTextColorResource();
@@ -101,9 +101,9 @@ public class SkinMaterialNavigationView extends NavigationView implements SkinCo
     public void setItemTextAppearance(@StyleRes int resId) {
         super.setItemTextAppearance(resId);
         if (resId != INVALID_ID) {
-            TypedArray a = getContext().obtainStyledAttributes(resId, R.styleable.SkinTextAppearance);
-            if (a.hasValue(R.styleable.SkinTextAppearance_android_textColor)) {
-                mTextColorResId = a.getResourceId(R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
+            TypedArray a = getContext().obtainStyledAttributes(resId, skin.support.R.styleable.SkinTextAppearance);
+            if (a.hasValue(skin.support.R.styleable.SkinTextAppearance_android_textColor)) {
+                mTextColorResId = a.getResourceId(skin.support.R.styleable.SkinTextAppearance_android_textColor, INVALID_ID);
             }
             a.recycle();
             applyItemTextColorResource();

@@ -3,6 +3,7 @@ package skin.support.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.annotation.DrawableRes;
@@ -10,9 +11,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.lang.reflect.Field;
-
 import skin.support.R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatVectorResources;
@@ -40,6 +39,9 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
     protected int mDrawableRightResId = INVALID_ID;
     protected int mDrawableTopResId = INVALID_ID;
     protected int mCursorDrawableResId = INVALID_ID;
+
+    protected int mTextSizeResId  = INVALID_ID;
+    protected int mTextFontResId  = INVALID_ID;
 
     public SkinCompatTextHelper(TextView view) {
         mView = view;
@@ -89,6 +91,14 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         if (a.hasValue(R.styleable.SkinTextAppearance_android_textColorHint)) {
             mTextColorHintResId = a.getResourceId(
                     R.styleable.SkinTextAppearance_android_textColorHint, INVALID_ID);
+        }
+        if(a.hasValue(R.styleable.SkinTextAppearance_android_font)){
+            mTextFontResId =   mTextColorHintResId = a.getResourceId(
+                    R.styleable.SkinTextAppearance_android_font, INVALID_ID);
+        }
+        if(a.hasValue(R.styleable.SkinTextAppearance_android_textSize)){
+            mTextSizeResId  = a.getResourceId(
+                    R.styleable.SkinTextAppearance_android_textSize, INVALID_ID);
         }
         a.recycle();
         applySkin();
@@ -255,11 +265,30 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         }
     }
 
+    protected void applyTextSizeFontResource(){
+        mTextFontResId = checkResourceId(mTextFontResId);
+        if (mTextFontResId != INVALID_ID) {
+            Typeface font = SkinCompatResources.getFont(mView.getContext(), mTextFontResId);
+            if(font != null){
+                mView.setTypeface(font);
+            }
+        }
+
+        mTextSizeResId = checkResourceId(mTextSizeResId);
+        if (mTextSizeResId != INVALID_ID) {
+            float size = SkinCompatResources.getDimension(mView.getContext(), mTextFontResId);
+            if(size != 0d){
+                mView.setTextSize(size);
+            }
+        }
+    }
+
     @Override
     public void applySkin() {
         applyCompoundDrawablesRelativeResource();
         applyTextColorResource();
         applyTextColorHintResource();
         applyTextCursorDrawableResource();
+        applyTextSizeFontResource();
     }
 }

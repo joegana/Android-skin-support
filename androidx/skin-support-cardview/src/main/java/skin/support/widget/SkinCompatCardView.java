@@ -6,8 +6,7 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import androidx.cardview.widget.CardView;
 import android.util.AttributeSet;
-
-import skin.support.cardview.R;
+import androidx.cardview.R;
 import skin.support.content.res.SkinCompatResources;
 
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;

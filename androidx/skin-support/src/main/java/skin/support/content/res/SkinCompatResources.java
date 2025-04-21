@@ -4,18 +4,23 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.XmlResourceParser;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.FontRes;
+import androidx.annotation.XmlRes;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import skin.support.SkinCompatManager;
 import skin.support.annotation.AnyRes;
+import skin.support.annotation.DrawableRes;
 
 public class SkinCompatResources {
     private static volatile SkinCompatResources sInstance;
@@ -205,6 +210,56 @@ public class SkinCompatResources {
         return context.getResources().getDrawable(resId);
     }
 
+    private Typeface getSkinFont(Context context,int resId){
+        if (mStrategy != null) {
+            Typeface font = mStrategy.getFont(context, mSkinName, resId);
+            if (font != null) {
+                return font;
+            }
+        }
+        if (!isDefaultSkin) {
+            int targetResId = getTargetResId(context, resId);
+            if (targetResId != 0) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    return mResources.getFont(targetResId);
+                }
+            }
+        }
+        return ResourcesCompat.getFont(context,resId);
+    }
+
+    private int getSkinDimensionSize(Context context,int resId){
+        if (mStrategy != null) {
+            int size = mStrategy.getSize(context, mSkinName, resId);
+            if (size != 0) {
+                return size;
+            }
+        }
+        if (!isDefaultSkin) {
+            int targetResId = getTargetResId(context, resId);
+            if (targetResId != 0) {
+                return mResources.getDimensionPixelSize(targetResId);
+            }
+        }
+        return context.getResources().getDimensionPixelSize(resId);
+    }
+
+    private float getSkinDimension(Context context,int resId){
+        if (mStrategy != null) {
+            float size = mStrategy.getDimension(context, mSkinName, resId);
+            if (size != 0f) {
+                return size;
+            }
+        }
+        if (!isDefaultSkin) {
+            int targetResId = getTargetResId(context, resId);
+            if (targetResId != 0) {
+                return mResources.getDimension(targetResId);
+            }
+        }
+        return context.getResources().getDimension(resId);
+    }
+
     Drawable getStrategyDrawable(Context context, int resId) {
         if (mStrategy != null) {
             return mStrategy.getDrawable(context, mSkinName, resId);
@@ -233,23 +288,37 @@ public class SkinCompatResources {
         context.getResources().getValue(resId, outValue, resolveRefs);
     }
 
-    public static int getColor(Context context, int resId) {
+    public static int getColor(Context context, @ColorRes int resId) {
         return getInstance().getSkinColor(context, resId);
     }
 
-    public static ColorStateList getColorStateList(Context context, int resId) {
+    public static ColorStateList getColorStateList(Context context,@ColorRes int resId) {
         return getInstance().getSkinColorStateList(context, resId);
     }
 
-    public static Drawable getDrawable(Context context, int resId) {
+    public static Drawable getDrawable(Context context, @DrawableRes  int resId) {
         return getInstance().getSkinDrawable(context, resId);
     }
 
-    public static XmlResourceParser getXml(Context context, int resId) {
+    public static XmlResourceParser getXml(Context context, @XmlRes  int resId) {
         return getInstance().getSkinXml(context, resId);
     }
 
     public static void getValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs) {
         getInstance().getSkinValue(context, resId, outValue, resolveRefs);
     }
+
+    public static Typeface getFont(Context context,@FontRes  int resId){
+        return getInstance().getSkinFont(context,resId);
+    }
+
+    public static int getSize(Context context,@DimenRes int resId){
+        return getInstance().getSkinDimensionSize(context,resId);
+    }
+
+    public static float getDimension(Context context,@DimenRes int resId){
+        return getInstance().getSkinDimension(context,resId);
+    }
+
+
 }

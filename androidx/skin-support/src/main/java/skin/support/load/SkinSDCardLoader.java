@@ -3,6 +3,7 @@ package skin.support.load;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 
@@ -53,5 +54,20 @@ public abstract class SkinSDCardLoader implements SkinLoaderStrategy {
     @Override
     public Drawable getDrawable(Context context, String skinName, int resId) {
         return null;
+    }
+
+    @Override
+    public Typeface getFont(Context context, String skinName, int resId) {
+        return null;
+    }
+
+    @Override
+    public int getSize(Context context, String skinName, int resId) {
+        return 0;
+    }
+
+    @Override
+    public float getDimension(Context context, String skinName, int resId) {
+        return 0;
     }
 }

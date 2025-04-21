@@ -5,7 +5,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.View;
-
 import com.ximsfei.skindemo.R;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -117,7 +116,7 @@ public class AvatarImageBehavior extends CoordinatorLayout.Behavior<CircleImageV
 
         // 边缘+缩略图宽度的一半
         if (mFinalXPosition == 0)
-            mFinalXPosition = mContext.getResources().getDimensionPixelOffset(R.dimen.abc_action_bar_content_inset_material) + (mFinalHeight / 2);
+            mFinalXPosition = mContext.getResources().getDimensionPixelOffset(com.google.android.material.R.dimen.abc_action_bar_content_inset_material) + (mFinalHeight / 2);
 
         // Toolbar的起始位置
         if (mStartToolbarPosition == 0)

@@ -2,10 +2,19 @@ plugins {
     id 'com.android.library'
 }
 
+ext {
+    publishVersion = rootProject.skinAndroidXVersion
+    publishGroup = rootProject.skinAndroidXSkinGroup
+    artifactFilePath  = "${project.buildDir}/outputs/aar/${project.name}-" +
+            "${(publishGroup.endsWith('SNAPSHOT') || publishGroup.endsWith('snapshot'))?'debug':'release'}.aar"
+    moduleName = 'skin-support-percentlayout'
+    descContent = 'percentlayout 控件换肤支持包'
+}
+
 android {
     namespace 'skin.support.percentlayout'
     compileSdkVersion rootProject.compileSdkVersion
-
+    namespace "skin.support.percentlayout"
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -24,18 +33,26 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures{
+        buildConfig = true
+    }
 }
 
 task generateSourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
-    classifier 'sources'
+    var src =  'sources'
+    archiveClassifier.convention(src)
+    archiveClassifier.set(src)
 }
 
 afterEvaluate {
+    logger.quiet("当前version:{}",publishVersion)
+    def snapShortVer = publishVersion.endsWith('SNAPSHOT') || publishVersion.endsWith('snapshot')
     tasks.matching {
-        (it.name.endsWith('artifactoryPublish'))
+        (it.name.endsWith('artifactoryPublish') || it.name.endsWith('publishAarPublicationToMavenLocal'))
     }.each { tk ->
-        tk.dependsOn('assembleRelease', 'generateSourcesJar')
+        tk.dependsOn("assemble${snapShortVer?'Debug':'Release'}", "generateSourcesJar")
     }
 }
 
@@ -46,12 +63,6 @@ dependencies {
     implementation project(':androidx:skin-support-appcompat')
 }
 
-ext {
-    publishVersion = rootProject.skinAndroidXVersion
-    publishGroup = rootProject.skinAndroidXSkinGroup
-    moduleName = 'skin-support-percentlayout'
-    descContent = 'percentlayout 控件换肤支持包'
-}
 
 //apply from: '../../publishing_maven.gradle'
 apply from: '../../publishing_localmaven.gradle'

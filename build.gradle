@@ -2,16 +2,22 @@
 
 buildscript {
     repositories {
+        maven {
+            url "http://211.91.57.96:8081/artifactory/mg-app-libs-release/"
+            allowInsecureProtocol true
+        }
         google()
         mavenLocal()
-        jcenter(){url 'https://jcenter.bintray.com/'}
         mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+        jcenter(){url 'https://jcenter.bintray.com/'}
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.1'
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:4.15.1'
+        classpath 'com.android.tools.build:gradle:8.4.1'
+//        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
+//        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+        classpath 'org.jfrog.buildinfo:build-info-extractor-gradle:5.2.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -19,10 +25,16 @@ buildscript {
 
 allprojects {
     repositories {
+        maven {
+            url "http://211.91.57.96:8081/artifactory/mg-app-libs-release/"
+            allowInsecureProtocol true
+        }
         google()
         mavenLocal()
-        jcenter(){url 'https://jcenter.bintray.com/'}
         mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+        jcenter(){url 'https://jcenter.bintray.com/'}
     }
 }
 
@@ -32,7 +44,7 @@ task clean(type: Delete) {
 
 ext {
     compileSdkVersion = 28
-    minSdkVersion = 14
+    minSdkVersion = 16
     targetSdkVersion = 28
 
     supportLibraryVersion = "25.1.1"
@@ -42,10 +54,11 @@ ext {
 
     skinAndroidSupportVersion = "3.2.8"
     skinAndroidSupportSkinGroup = "skin.support"
-    skinAndroidXVersion = "4.0.6.4"
+    skinAndroidXVersion = "4.0.7.0"
     skinAndroidXSkinGroup = "skin.support"
 
     artifactory_user='justin'
     artifactory_password='123456'
-    artifactory_contextUrl='http://192.168.50.6:8081/artifactory/'
+//    artifactory_contextUrl='http://192.168.50.6:8081/artifactory/'
+    artifactory_contextUrl='http://211.91.57.96:8081/artifactory/'
 }
