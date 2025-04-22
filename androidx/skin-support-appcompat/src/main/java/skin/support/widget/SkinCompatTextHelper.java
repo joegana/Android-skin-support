@@ -9,6 +9,7 @@ import android.os.Build;
 import androidx.annotation.DrawableRes;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.lang.reflect.Field;
@@ -278,7 +279,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         if (mTextSizeResId != INVALID_ID) {
             float size = SkinCompatResources.getDimension(mView.getContext(), mTextSizeResId);
             if(size != 0d){
-                mView.setTextSize(size);
+                mView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
             }
         }
     }
