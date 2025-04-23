@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdk rootProject.compileSdkVersion
 
     defaultConfig {
         applicationId "skin.support.mobile.demo"

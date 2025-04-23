@@ -10,4 +10,6 @@
     <dimen name="title_margin">20dp</dimen>
 
     <dimen name="title_txt_size">16sp</dimen>
+
+    <dimen name="item_height">40dp</dimen>
 </resources>

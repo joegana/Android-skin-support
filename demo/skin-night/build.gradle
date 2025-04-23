@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
-
+    compileSdk rootProject.compileSdkVersion
+    namespace "com.ximsfei.skindemo.night"
     defaultConfig {
         applicationId "com.ximsfei.skindemo.night"
         minSdkVersion rootProject.minSdkVersion
@@ -15,6 +15,47 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            variant.getPackageApplicationProvider().get().outputDirectory = new File(project.rootDir.absolutePath + "/demo/skin-androidx-app/src/main/assets/skins")
+            def fileName = "night.skin"
+            outputFileName = fileName
+        }
+    }
+}
+
+
+/**
+ *  check night.skin是否是合法的apk包
+ */
+task checkSkinPack(type:Exec){
+    workingDir  project.rootDir.absolutePath + "/demo/skin-androidx-app/src/main/assets/skins/"
+    commandLine 'cmd','/c','aapt d badging night.skin'
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput =  new ByteArrayOutputStream()
+    ext.output = {
+        return standardOutput.toString()
+    }
+
+    doLast {
+        logger.quiet(standardOutput.toString())
+        logger.log(LogLevel.ERROR,"错误信息:${errorOutput.toString()}")
+        def result = getExecutionResult()
+        try {
+            result = result.get().assertNormalExitValue()
+        }catch(Exception e){
+            logger.log(LogLevel.ERROR,"checkSkinPack error",e)
+        }
+        assert result.getExitValue() == 0
+
+    }
+}
+
+tasks.whenTaskAdded {task ->
+    if (task.name.contains("ReleaseApkListingFileRedirect")) {
+        task.enabled = false
     }
 }
 

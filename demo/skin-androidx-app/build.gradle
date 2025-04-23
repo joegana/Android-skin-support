@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk rootProject.compileSdkVersion
     namespace "com.ximsfei.skindemo"
     defaultConfig {
         applicationId "com.ximsfei.skindemo"
@@ -23,6 +23,34 @@ android {
     }
     buildFeatures{
         buildConfig = true
+    }
+}
+
+afterEvaluate {
+    //开始配置项目之前删除皮肤包资源,以便于重新生成
+    def skinFile =file(project.rootDir.absolutePath + "/demo/skin-androidx-app/src/main/assets/skins/night.skin")
+    if(skinFile.exists()){
+        if(skinFile.delete()){
+            logger.quiet("存在的旧的的 skin package 已经被删除")
+        }else{
+            def errMsg =  "旧的的 skin package 删除失败"
+            logger.log(LogLevel.ERROR,errMsg)
+            assert false
+        }
+    }else{
+        logger.log(LogLevel.WARN,"不存存在的旧的的 skin package")
+    }
+
+    tasks.matching {
+        (it.name.endsWith('mergeDebugAssets')||it.name.endsWith('mergeReleaseAssets'))
+    }.each { tk ->
+        tk.dependsOn(':demo:skin-night:packageRelease')
+    }
+
+    tasks.matching {
+        (it.name.endsWith('packageDebug')||it.name.endsWith('packageRelease'))
+    }.each { tk ->
+        tk.dependsOn(':demo:skin-night:packageRelease')
     }
 }
 

@@ -16,4 +16,6 @@
     <color name="textBackground">#111214</color>
     <color name="background">#111214</color>
     <color name="divider">#2cffffff</color>
+    <color name="text_color">@color/titleTextColor_night</color>
+
 </resources>

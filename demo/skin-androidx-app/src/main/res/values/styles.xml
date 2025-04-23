@@ -70,4 +70,11 @@
     <style name="counterTextAppearance" parent="TextAppearance.Design.Counter">
         <item name="android:textColor">@color/text_color_tip</item>
     </style>
+
+
+    <style name="textStyle">
+        <item name="android:textSize">@dimen/title_txt_size</item>
+        <item name="android:textColor">@color/text_color</item>
+        <item name="android:fontFamily">@font/misans_regular</item>
+    </style>
 </resources>
