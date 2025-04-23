@@ -10,7 +10,7 @@ ext {
 }
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk rootProject.compileSdkVersion
     namespace "skin.support.appcompat"
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion

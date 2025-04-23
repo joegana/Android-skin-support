@@ -94,8 +94,12 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
                     R.styleable.SkinTextAppearance_android_textColorHint, INVALID_ID);
         }
         if(a.hasValue(R.styleable.SkinTextAppearance_android_font)){
-            mTextFontResId =   mTextColorHintResId = a.getResourceId(
+            mTextFontResId  = a.getResourceId(
                     R.styleable.SkinTextAppearance_android_font, INVALID_ID);
+        }
+        if(mTextFontResId == INVALID_ID && a.hasValue(R.styleable.SkinTextAppearance_android_fontFamily)){
+            mTextFontResId  = a.getResourceId(
+                    R.styleable.SkinTextAppearance_android_fontFamily, INVALID_ID);
         }
         if(a.hasValue(R.styleable.SkinTextAppearance_android_textSize)){
             mTextSizeResId  = a.getResourceId(
@@ -278,7 +282,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         mTextSizeResId = checkResourceId(mTextSizeResId);
         if (mTextSizeResId != INVALID_ID) {
             float size = SkinCompatResources.getDimension(mView.getContext(), mTextSizeResId);
-            if(size != 0d){
+            if(size != 0f){
                 mView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
             }
         }

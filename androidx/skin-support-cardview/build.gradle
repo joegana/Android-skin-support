@@ -11,7 +11,7 @@ ext {
 
 
 android {
-    compileSdkVersion rootProject.compileSdkVersion
+    compileSdk rootProject.compileSdkVersion
     namespace "skin.support.cardview"
     defaultConfig {
         minSdkVersion rootProject.minSdkVersion

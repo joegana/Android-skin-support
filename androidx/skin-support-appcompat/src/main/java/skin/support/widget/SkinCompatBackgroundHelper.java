@@ -4,9 +4,11 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.View;
 
 import skin.support.R;
+import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatVectorResources;
 
 /**
@@ -17,6 +19,8 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
     private final View mView;
 
     private int mBackgroundResId = INVALID_ID;
+    private int mMinWidthResId = INVALID_ID;
+    private int mMinHeightResId = INVALID_ID;
 
     public SkinCompatBackgroundHelper(View view) {
         mView = view;
@@ -32,6 +36,22 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
         } finally {
             a.recycle();
         }
+
+        TypedArray b = mView.getContext().obtainStyledAttributes(attrs, R.styleable.SkinWidthHeightHelper,
+                defStyleAttr, 0);
+        try {
+            if (b.hasValue(R.styleable.SkinWidthHeightHelper_android_minWidth)) {
+
+                mMinWidthResId = b.getResourceId(
+                        R.styleable.SkinWidthHeightHelper_android_minWidth, INVALID_ID);
+            }
+            if (b.hasValue(R.styleable.SkinWidthHeightHelper_android_minHeight)) {
+                mMinHeightResId = b.getResourceId(
+                        R.styleable.SkinWidthHeightHelper_android_minHeight, INVALID_ID);
+            }
+        } finally {
+            b.recycle();
+        }
         applySkin();
     }
 
@@ -41,8 +61,7 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
         applySkin();
     }
 
-    @Override
-    public void applySkin() {
+    private void applyBackground(){
         mBackgroundResId = checkResourceId(mBackgroundResId);
         if (mBackgroundResId == INVALID_ID) {
             return;
@@ -56,5 +75,28 @@ public class SkinCompatBackgroundHelper extends SkinCompatHelper {
             ViewCompat.setBackground(mView, drawable);
             mView.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         }
+    }
+    
+    private void applyWidthHeight(){
+        mMinWidthResId = checkResourceId(mMinWidthResId);
+        if (mMinWidthResId != INVALID_ID) {
+            int width = SkinCompatResources.getSize(mView.getContext(), mMinWidthResId);
+            if(width != 0){
+                mView.setMinimumWidth(width);
+            }
+        }
+
+        if (mMinHeightResId != INVALID_ID) {
+            int height = SkinCompatResources.getSize(mView.getContext(), mMinHeightResId);
+            if(height != 0){
+                mView.setMinimumHeight(height);
+            }
+        }
+    }
+
+    @Override
+    public void applySkin() {
+        applyBackground();
+        applyWidthHeight();
     }
 }

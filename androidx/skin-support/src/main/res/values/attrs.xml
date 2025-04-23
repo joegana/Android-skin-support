@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <declare-styleable name="SkinWidthHeightHelper">
+        <attr name="android:minWidth" />
+        <attr name="android:minHeight" />
+    </declare-styleable>
+
     <declare-styleable name="SkinBackgroundHelper">
         <attr name="android:background" />
     </declare-styleable>
@@ -28,6 +34,7 @@
         <attr name="android:textColorHint" />
         <attr name="android:textStyle" />
         <attr name="android:font" />
+        <attr name="android:fontFamily" />
         <attr name="android:typeface" />
         <attr name="textAllCaps" />
         <attr name="android:shadowColor" />
