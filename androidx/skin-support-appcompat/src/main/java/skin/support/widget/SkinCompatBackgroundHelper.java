@@ -4,9 +4,7 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
-
 import skin.support.R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatVectorResources;
@@ -16,11 +14,11 @@ import skin.support.content.res.SkinCompatVectorResources;
  */
 
 public class SkinCompatBackgroundHelper extends SkinCompatHelper {
-    private final View mView;
+    protected final View mView;
 
     private int mBackgroundResId = INVALID_ID;
-    private int mMinWidthResId = INVALID_ID;
-    private int mMinHeightResId = INVALID_ID;
+    protected int mMinWidthResId = INVALID_ID;
+    protected int mMinHeightResId = INVALID_ID;
 
     public SkinCompatBackgroundHelper(View view) {
         mView = view;

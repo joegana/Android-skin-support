@@ -11,13 +11,10 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.util.SparseArray;
-
 import androidx.annotation.DimenRes;
 import androidx.annotation.FontRes;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import skin.support.annotation.NonNull;
 import skin.support.annotation.Nullable;
 import skin.support.app.SkinActivityLifecycle;
