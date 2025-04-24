@@ -68,7 +68,7 @@ dependencies {
     implementation project(':androidx:skin-support-design')
 //    implementation "android.skin:skin-support-design:${skinAndroidXVersion}"
 
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-alpha2"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation project(':androidx:skin-support-constraint-layout')
 //    implementation "android.skin:skin-support-constraint-layout:${skinAndroidXVersion}"
 

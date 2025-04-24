@@ -114,7 +114,8 @@ public class SplashActivity extends BaseActivity {
             int padding = (int) (mDisplayMetrics.density * 10);
 
 
-            TextView tv = (TextView) getLayoutInflater().inflate(R.layout.simple_spinner_item, null);
+            View gp = getLayoutInflater().inflate(R.layout.simple_spinner_item, null);
+            TextView tv = gp.findViewById(android.R.id.text1);
             tv.setText(mItems[position]);
             tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             tv.setTextAppearance(SplashActivity.this, R.style.SkinCompatTextAppearance);
