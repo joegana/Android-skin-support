@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import androidx.lifecycle.Lifecycle;
 
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -197,9 +198,22 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
     private boolean isContextSkinEnable(Context context) {
         Skinable skinable = context.getClass().getAnnotation(Skinable.class);
         return SkinCompatManager.getInstance().isSkinAllActivityEnable()
-                ||  (skinable != null && skinable.value())
-                || context instanceof SkinCompatSupportable;
+                || (skinable != null && skinable.value())
+                || context instanceof SkinCompatSupportable
+                || isSkinable(context) ;
     }
+
+    private boolean isSkinable(Context context){
+        try {
+            Field field = context.getClass().getDeclaredField("isSkinable");
+            field.setAccessible(true);
+            return (Boolean) field.get(null);
+        }catch (Exception e){
+            Slog.r("isSkinable", e.toString());
+        }
+        return false;
+    }
+
 
     private class LazySkinObserver implements SkinObserver {
         private final Context mContext;
