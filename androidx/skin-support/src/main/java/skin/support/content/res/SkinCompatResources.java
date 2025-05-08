@@ -105,6 +105,10 @@ public class SkinCompatResources {
         return mSkinPackageName.get(skinName);
     }
 
+    public String getSkinName(){
+        return  mSkinName;
+    }
+
     public SkinCompatManager.SkinLoaderStrategy getStrategy() {
         return mStrategy;
     }
@@ -149,23 +153,26 @@ public class SkinCompatResources {
         }
     }
 
-    private int getSkinColor(Context context, int resId) {
-        if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
-            ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
-            if (colorStateList != null) {
-                return colorStateList.getDefaultColor();
+    private int getSkinColor(Context context, int resId,String skinName) {
+        if(!TextUtils.isEmpty(skinName)) {
+            if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
+                ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
+                if (colorStateList != null) {
+                    return colorStateList.getDefaultColor();
+                }
             }
-        }
-        if (mStrategy != null) {
-            ColorStateList colorStateList = mStrategy.getColor(context, mSkinName, resId);
-            if (colorStateList != null) {
-                return colorStateList.getDefaultColor();
+
+            if (mStrategy != null) {
+                ColorStateList colorStateList = mStrategy.getColor(context, skinName, resId);
+                if (colorStateList != null) {
+                    return colorStateList.getDefaultColor();
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getColor(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getColor(targetResId);
+                }
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -174,23 +181,26 @@ public class SkinCompatResources {
         return context.getResources().getColor(resId);
     }
 
-    private ColorStateList getSkinColorStateList(Context context, int resId) {
-        if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
-            ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
-            if (colorStateList != null) {
-                return colorStateList;
+    private ColorStateList getSkinColorStateList(Context context, int resId,String skinName) {
+        if(!TextUtils.isEmpty(skinName)) {
+            if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
+                ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
+                if (colorStateList != null) {
+                    return colorStateList;
+                }
             }
-        }
-        if (mStrategy != null) {
-            ColorStateList colorStateList = mStrategy.getColorStateList(context, mSkinName, resId);
-            if (colorStateList != null) {
-                return colorStateList;
+
+            if (mStrategy != null) {
+                ColorStateList colorStateList = mStrategy.getColorStateList(context, skinName, resId);
+                if (colorStateList != null) {
+                    return colorStateList;
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getColorStateList(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getColorStateList(targetResId);
+                }
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -199,29 +209,31 @@ public class SkinCompatResources {
         return context.getResources().getColorStateList(resId);
     }
 
-    private Drawable getSkinDrawable(Context context, int resId) {
-        if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
-            ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
-            if (colorStateList != null) {
-                return new ColorDrawable(colorStateList.getDefaultColor());
+    private Drawable getSkinDrawable(Context context, int resId,String skinName) {
+        if(!TextUtils.isEmpty(skinName)){
+            if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
+                ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
+                if (colorStateList != null) {
+                    return new ColorDrawable(colorStateList.getDefaultColor());
+                }
             }
-        }
-        if (!SkinCompatUserThemeManager.get().isDrawableEmpty()) {
-            Drawable drawable = SkinCompatUserThemeManager.get().getDrawable(resId);
-            if (drawable != null) {
-                return drawable;
+            if (!SkinCompatUserThemeManager.get().isDrawableEmpty()) {
+                Drawable drawable = SkinCompatUserThemeManager.get().getDrawable(resId);
+                if (drawable != null) {
+                    return drawable;
+                }
             }
-        }
-        if (mStrategy != null) {
-            Drawable drawable = mStrategy.getDrawable(context, mSkinName, resId);
-            if (drawable != null) {
-                return drawable;
+            if (mStrategy != null) {
+                Drawable drawable = mStrategy.getDrawable(context, skinName, resId);
+                if (drawable != null) {
+                    return drawable;
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getDrawable(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getDrawable(targetResId);
+                }
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -230,51 +242,57 @@ public class SkinCompatResources {
         return context.getResources().getDrawable(resId);
     }
 
-    private Typeface getSkinFont(Context context,int resId){
-        if (mStrategy != null) {
-            Typeface font = mStrategy.getFont(context, mSkinName, resId);
-            if (font != null) {
-                return font;
+    private Typeface getSkinFont(Context context,int resId,String skinName){
+        if(!TextUtils.isEmpty(skinName)){
+            if (mStrategy != null) {
+                Typeface font = mStrategy.getFont(context, mSkinName, resId);
+                if (font != null) {
+                    return font;
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    return mResources.getFont(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        return mResources.getFont(targetResId);
+                    }
                 }
             }
         }
         return ResourcesCompat.getFont(context,resId);
     }
 
-    private int getSkinDimensionSize(Context context,int resId){
-        if (mStrategy != null) {
-            int size = mStrategy.getSize(context, mSkinName, resId);
-            if (size != 0) {
-                return size;
+    private int getSkinDimensionSize(Context context,int resId,String skinName){
+        if(!TextUtils.isEmpty(skinName)){
+            if (mStrategy != null) {
+                int size = mStrategy.getSize(context, mSkinName, resId);
+                if (size != 0) {
+                    return size;
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getDimensionPixelSize(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getDimensionPixelSize(targetResId);
+                }
             }
         }
         return context.getResources().getDimensionPixelSize(resId);
     }
 
-    private float getSkinDimension(Context context,int resId){
-        if (mStrategy != null) {
-            float size = mStrategy.getDimension(context, mSkinName, resId);
-            if (size != 0f) {
-                return size;
+    private float getSkinDimension(Context context,int resId,String skinName){
+        if(!TextUtils.isEmpty(skinName)){
+            if (mStrategy != null) {
+                float size = mStrategy.getDimension(context, mSkinName, resId);
+                if (size != 0f) {
+                    return size;
+                }
             }
-        }
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getDimension(targetResId);
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getDimension(targetResId);
+                }
             }
         }
         return context.getResources().getDimension(resId);
@@ -287,58 +305,94 @@ public class SkinCompatResources {
         return null;
     }
 
-    private XmlResourceParser getSkinXml(Context context, int resId) {
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                return mResources.getXml(targetResId);
+    private XmlResourceParser getSkinXml(Context context, int resId,String skinName) {
+        if(!TextUtils.isEmpty(skinName)) {
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    return mResources.getXml(targetResId);
+                }
             }
         }
         return context.getResources().getXml(resId);
     }
 
-    private void getSkinValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs) {
-        if (!isDefaultSkin) {
-            int targetResId = getTargetResId(context, resId);
-            if (targetResId != 0) {
-                mResources.getValue(targetResId, outValue, resolveRefs);
-                return;
+    private void getSkinValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs,String skinName) {
+        if(!TextUtils.isEmpty(skinName)){
+            if (!isDefaultSkin) {
+                int targetResId = getTargetResId(context, resId);
+                if (targetResId != 0) {
+                    mResources.getValue(targetResId, outValue, resolveRefs);
+                    return;
+                }
             }
         }
         context.getResources().getValue(resId, outValue, resolveRefs);
     }
 
     public static int getColor(Context context, @ColorRes int resId) {
-        return getInstance().getSkinColor(context, resId);
+        return getInstance().getSkinColor(context, resId, getInstance().getSkinName());
     }
 
     public static ColorStateList getColorStateList(Context context,@ColorRes int resId) {
-        return getInstance().getSkinColorStateList(context, resId);
+        return getInstance().getSkinColorStateList(context, resId,getInstance().getSkinName());
     }
 
     public static Drawable getDrawable(Context context, @DrawableRes  int resId) {
-        return getInstance().getSkinDrawable(context, resId);
+        return getInstance().getSkinDrawable(context, resId,getInstance().getSkinName());
     }
 
     public static XmlResourceParser getXml(Context context, @XmlRes  int resId) {
-        return getInstance().getSkinXml(context, resId);
+        return getInstance().getSkinXml(context, resId,getInstance().getSkinName());
     }
 
     public static void getValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs) {
-        getInstance().getSkinValue(context, resId, outValue, resolveRefs);
+        getInstance().getSkinValue(context, resId, outValue, resolveRefs,getInstance().getSkinName());
     }
 
     public static Typeface getFont(Context context,@FontRes  int resId){
-        return getInstance().getSkinFont(context,resId);
+        return getInstance().getSkinFont(context,resId,getInstance().getSkinName());
     }
 
     public static int getSize(Context context,@DimenRes int resId){
-        return getInstance().getSkinDimensionSize(context,resId);
+        return getInstance().getSkinDimensionSize(context,resId,getInstance().getSkinName());
     }
 
     public static float getDimension(Context context,@DimenRes int resId){
-        return getInstance().getSkinDimension(context,resId);
+        return getInstance().getSkinDimension(context,resId,getInstance().getSkinName());
     }
 
+
+    public static int getColor(Context context, @ColorRes int resId,String skinName) {
+        return getInstance().getSkinColor(context, resId, skinName);
+    }
+
+    public static ColorStateList getColorStateList(Context context,@ColorRes int resId,String skinName) {
+        return getInstance().getSkinColorStateList(context, resId,skinName);
+    }
+
+    public static Drawable getDrawable(Context context, @DrawableRes  int resId,String skinName) {
+        return getInstance().getSkinDrawable(context, resId,skinName);
+    }
+
+    public static XmlResourceParser getXml(Context context, @XmlRes  int resId,String skinName) {
+        return getInstance().getSkinXml(context, resId,skinName);
+    }
+
+    public static void getValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs,String skinName) {
+        getInstance().getSkinValue(context, resId, outValue, resolveRefs,skinName);
+    }
+
+    public static Typeface getFont(Context context,@FontRes  int resId,String skinName){
+        return getInstance().getSkinFont(context,resId,skinName);
+    }
+
+    public static int getSize(Context context,@DimenRes int resId,String skinName){
+        return getInstance().getSkinDimensionSize(context,resId,skinName);
+    }
+
+    public static float getDimension(Context context,@DimenRes int resId,String skinName){
+        return getInstance().getSkinDimension(context,resId,skinName);
+    }
 
 }

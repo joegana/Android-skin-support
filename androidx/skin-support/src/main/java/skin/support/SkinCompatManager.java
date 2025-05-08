@@ -418,9 +418,15 @@ public class SkinCompatManager extends SkinObservable {
                     skinRes.getSkinPkgName(skinName),
                     skinName,
                     skinRes.getStrategy(skinName));
-            if(listener != null){
-                CUtilKt.callOnMain(0, null, listener::onSuccess);
-            }
+            CUtilKt.callOnMain(0, null, () -> {
+                SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
+                        skinRes.getStrategy(skinName).getType()).commitEditor();
+                notifyUpdateSkin();
+                if(listener != null){
+                    listener.onSuccess();
+                }
+            });
+
             return null ;
         }
         return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
