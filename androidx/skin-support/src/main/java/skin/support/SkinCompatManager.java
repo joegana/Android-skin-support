@@ -384,13 +384,14 @@ public class SkinCompatManager extends SkinObservable {
         return loadSkin(skinName, listener, SKIN_LOADER_STRATEGY_ASSETS);
     }
 
-    /**
+     /**
      * 加载皮肤包.
      *
      * @param skinName 皮肤包名称.
      * @param strategy 皮肤包加载策略.
      * @return
      */
+     @androidx.annotation.Nullable
     public AsyncTask loadSkin(String skinName, int strategy) {
         return loadSkin(skinName, null, strategy);
     }
@@ -417,7 +418,9 @@ public class SkinCompatManager extends SkinObservable {
                     skinRes.getSkinPkgName(skinName),
                     skinName,
                     skinRes.getStrategy(skinName));
-            CUtilKt.callOnMain(0, null, listener::onSuccess);
+            if(listener != null){
+                CUtilKt.callOnMain(0, null, listener::onSuccess);
+            }
             return null ;
         }
         return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
