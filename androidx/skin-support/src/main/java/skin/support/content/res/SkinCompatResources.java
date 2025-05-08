@@ -17,6 +17,7 @@ import androidx.annotation.XmlRes;
 import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import skin.support.SkinCompatManager;
 import skin.support.annotation.AnyRes;
@@ -25,6 +26,10 @@ import skin.support.annotation.DrawableRes;
 public class SkinCompatResources {
     private static volatile SkinCompatResources sInstance;
     private Resources mResources;
+    private HashMap<String,Resources> mResourcesMap = new HashMap<>();
+    private HashMap<String,String> mSkinPackageName = new HashMap<>();
+    private HashMap<String,SkinCompatManager.SkinLoaderStrategy> mSkinStrategy = new HashMap<>();
+
     private String mSkinPkgName = "";
     private String mSkinName = "";
     private SkinCompatManager.SkinLoaderStrategy mStrategy;
@@ -74,6 +79,9 @@ public class SkinCompatResources {
         mSkinPkgName = pkgName;
         mSkinName = skinName;
         mStrategy = strategy;
+        mResourcesMap.put(skinName,resources);
+        mSkinPackageName.put(skinName,pkgName);
+        mSkinStrategy.put(skinName,strategy);
         isDefaultSkin = false;
         SkinCompatUserThemeManager.get().clearCaches();
         for (SkinResources skinResources : mSkinResources) {
@@ -85,12 +93,24 @@ public class SkinCompatResources {
         return mResources;
     }
 
+    public Resources getSkinResources(String skinName) {
+        return mResourcesMap.get(skinName);
+    }
+
     public String getSkinPkgName() {
         return mSkinPkgName;
     }
 
+    public String getSkinPkgName(String skinName) {
+        return mSkinPackageName.get(skinName);
+    }
+
     public SkinCompatManager.SkinLoaderStrategy getStrategy() {
         return mStrategy;
+    }
+
+    public SkinCompatManager.SkinLoaderStrategy getStrategy(String skinName) {
+        return mSkinStrategy.get(skinName);
     }
 
     public boolean isDefaultSkin() {
