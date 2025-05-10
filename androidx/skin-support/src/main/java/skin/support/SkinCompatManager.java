@@ -411,22 +411,29 @@ public class SkinCompatManager extends SkinObservable {
             return null;
         }
         SkinCompatResources skinRes =  SkinCompatResources.getInstance();
-        Resources resources = skinRes.getSkinResources(skinName);
+         Resources resources = skinRes.getSkinResources(skinName);
+         boolean notifySkinChanged = false ;
         if(resources != null){
             SkinCompatResources.getInstance().setupSkin(
                     resources,
                     skinRes.getSkinPkgName(skinName),
                     skinName,
                     skinRes.getStrategy(skinName));
+            SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
+                    skinRes.getStrategy(skinName).getType()).commitEditor();
+            notifySkinChanged = true;
+        }else if(TextUtils.isEmpty(skinName)){
+            SkinCompatResources.getInstance().reset();
+            SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE).commitEditor();
+            notifySkinChanged = true;
+        }
+        if(notifySkinChanged){
             CUtilKt.callOnMain(0, null, () -> {
-                SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
-                        skinRes.getStrategy(skinName).getType()).commitEditor();
                 notifyUpdateSkin();
                 if(listener != null){
                     listener.onSuccess();
                 }
             });
-
             return null ;
         }
         return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
