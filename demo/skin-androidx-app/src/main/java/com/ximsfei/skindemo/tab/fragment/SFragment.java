@@ -37,7 +37,10 @@ public class SFragment extends Fragment {
         mSpinner = (Spinner) view.findViewById(R.id.spinner);
         final CharSequence[] entries = getResources().getStringArray(R.array.languages);
         if (entries != null) {
-            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getActivity(), R.layout.simple_spinner_item, entries);
+            final ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getActivity(),
+                    R.layout.simple_spinner_item,
+                    android.R.id.text1,
+                    entries);
             adapter.setDropDownViewResource(R.layout.simple_spinner_item);
             mSpinner.setAdapter(adapter);
         }

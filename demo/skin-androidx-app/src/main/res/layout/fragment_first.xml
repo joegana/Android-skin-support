@@ -29,6 +29,7 @@
                 android:background="?attr/colorPrimary"
                 android:gravity="center_vertical"
                 android:text="textView"
+                android:letterSpacing="@dimen/text_letterSpace"
                 android:textColor="@color/text_color"
                 android:textSize="18sp" />
 
