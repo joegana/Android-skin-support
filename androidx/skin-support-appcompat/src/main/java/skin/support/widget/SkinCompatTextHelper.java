@@ -43,6 +43,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
 
     protected int mTextSizeResId  = INVALID_ID;
     protected int mTextFontResId  = INVALID_ID;
+    protected int mLetterSpaceResId = INVALID_ID;
 
     public SkinCompatTextHelper(TextView view) {
         mView = view;
@@ -104,6 +105,10 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
         if(a.hasValue(R.styleable.SkinTextAppearance_android_textSize)){
             mTextSizeResId  = a.getResourceId(
                     R.styleable.SkinTextAppearance_android_textSize, INVALID_ID);
+        }
+        if(a.hasValue(R.styleable.SkinTextAppearance_android_letterSpacing)){
+            mLetterSpaceResId  = a.getResourceId(
+                    R.styleable.SkinTextAppearance_android_letterSpacing, INVALID_ID);
         }
         a.recycle();
         applySkin();
@@ -285,6 +290,14 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
             if(size != 0f){
                 mView.setTextSize(TypedValue.COMPLEX_UNIT_PX,size);
             }
+        }
+
+        mLetterSpaceResId = checkResourceId(mLetterSpaceResId);
+        if(mLetterSpaceResId != INVALID_ID){
+            TypedValue fl = new TypedValue();
+            SkinCompatResources.getValue(mView.getContext(),mLetterSpaceResId, fl,true);
+            float sp = fl.getFloat();
+            mView.setLetterSpacing(sp);
         }
     }
 

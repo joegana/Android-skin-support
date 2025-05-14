@@ -109,6 +109,15 @@ public class SkinCompatResources {
         return  mSkinName;
     }
 
+    private String getSkinPrefix(){
+        int i = mSkinName.indexOf('.');
+        if(i > -1){
+            return mSkinName.substring(0,i);
+        }else{
+            return mSkinName;
+        }
+    }
+
     public SkinCompatManager.SkinLoaderStrategy getStrategy() {
         return mStrategy;
     }

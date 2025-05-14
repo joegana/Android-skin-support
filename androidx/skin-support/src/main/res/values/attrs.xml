@@ -36,6 +36,7 @@
         <attr name="android:font" />
         <attr name="android:fontFamily" />
         <attr name="android:typeface" />
+        <attr name="android:letterSpacing" />
         <attr name="textAllCaps" />
         <attr name="android:shadowColor" />
         <attr name="android:shadowDy" />
