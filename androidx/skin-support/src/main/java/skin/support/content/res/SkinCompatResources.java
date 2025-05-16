@@ -15,24 +15,26 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.FontRes;
 import androidx.annotation.XmlRes;
 import androidx.core.content.res.ResourcesCompat;
-
+import  skin.support.SkinCompatManager.SkinLoaderStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import skin.support.SkinCompatManager;
 import skin.support.annotation.AnyRes;
 import skin.support.annotation.DrawableRes;
+import skin.support.app.SkinActivityLifecycle;
 
 public class SkinCompatResources {
     private static volatile SkinCompatResources sInstance;
     private Resources mResources;
     private HashMap<String,Resources> mResourcesMap = new HashMap<>();
     private HashMap<String,String> mSkinPackageName = new HashMap<>();
-    private HashMap<String,SkinCompatManager.SkinLoaderStrategy> mSkinStrategy = new HashMap<>();
+    private HashMap<String,SkinLoaderStrategy> mSkinStrategy = new HashMap<>();
 
     private String mSkinPkgName = "";
     private String mSkinName = "";
-    private SkinCompatManager.SkinLoaderStrategy mStrategy;
+    private SkinLoaderStrategy mStrategy;
     private boolean isDefaultSkin = true;
     private List<SkinResources> mSkinResources = new ArrayList<>();
 
@@ -109,14 +111,39 @@ public class SkinCompatResources {
         return  mSkinName;
     }
 
-    private String getSkinPrefix(){
-        int i = mSkinName.indexOf('.');
-        if(i > -1){
-            return mSkinName.substring(0,i);
-        }else{
-            return mSkinName;
+    private Resources getSkinableResource(String skinName){
+        Resources ret = mResources;
+        if(!TextUtils.isEmpty(skinName)){
+            Resources r =  mResourcesMap.get(skinName);
+            if(r != null){
+                ret = r ;
+            }
         }
+        return ret;
     }
+
+    private String getSkinablePkgName(String skinName){
+        String ret = mSkinPkgName;
+        if(!TextUtils.isEmpty(skinName)){
+            String r = mSkinPackageName.get(skinName);
+            if(!TextUtils.isEmpty(r)){
+                ret = r ;
+            }
+        }
+        return ret;
+    }
+
+    private SkinLoaderStrategy getSkinableStrategy(String skinName){
+        SkinLoaderStrategy ret = mStrategy;
+        if(!TextUtils.isEmpty(skinName)){
+            SkinLoaderStrategy r = mSkinStrategy.get(skinName);
+            if(r != null ){
+                ret = r ;
+            }
+        }
+        return ret;
+    }
+
 
     public SkinCompatManager.SkinLoaderStrategy getStrategy() {
         return mStrategy;
@@ -162,8 +189,44 @@ public class SkinCompatResources {
         }
     }
 
+
+    public int getTargetResId(Context context,
+                              Resources targetRes,
+                              SkinCompatManager.SkinLoaderStrategy targetStrategy,
+                              String targetSkinName,
+                              String targetPkgName,
+                              int resId) {
+        try {
+            String resName = null;
+            if (targetStrategy != null) {
+                resName = targetStrategy.getTargetResourceEntryName(context, targetSkinName, resId);
+            }
+            if (TextUtils.isEmpty(resName)) {
+                resName = context.getResources().getResourceEntryName(resId);
+            }
+            String type = context.getResources().getResourceTypeName(resId);
+            return targetRes.getIdentifier(resName, type, targetPkgName);
+        } catch (Exception e) {
+            // 换肤失败不至于应用崩溃.
+            return 0;
+        }
+    }
+
     private int getSkinColor(Context context, int resId,String skinName) {
-        if(!TextUtils.isEmpty(skinName)) {
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)) {
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
                 if (colorStateList != null) {
@@ -171,16 +234,16 @@ public class SkinCompatResources {
                 }
             }
 
-            if (mStrategy != null) {
-                ColorStateList colorStateList = mStrategy.getColor(context, skinName, resId);
+            if (strategy != null) {
+                ColorStateList colorStateList = strategy.getColor(context, skinName, resId);
                 if (colorStateList != null) {
                     return colorStateList.getDefaultColor();
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getColor(targetResId);
+                    return resources.getColor(targetResId);
                 }
             }
         }
@@ -191,7 +254,20 @@ public class SkinCompatResources {
     }
 
     private ColorStateList getSkinColorStateList(Context context, int resId,String skinName) {
-        if(!TextUtils.isEmpty(skinName)) {
+        String pName = getSkinName(context) ;
+        if(!TextUtils.isEmpty(skinName)  || !TextUtils.isEmpty(pName)) {
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
                 if (colorStateList != null) {
@@ -199,16 +275,16 @@ public class SkinCompatResources {
                 }
             }
 
-            if (mStrategy != null) {
-                ColorStateList colorStateList = mStrategy.getColorStateList(context, skinName, resId);
+            if (strategy != null) {
+                ColorStateList colorStateList = strategy.getColorStateList(context, skinName, resId);
                 if (colorStateList != null) {
                     return colorStateList;
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getColorStateList(targetResId);
+                    return resources.getColorStateList(targetResId);
                 }
             }
         }
@@ -218,8 +294,29 @@ public class SkinCompatResources {
         return context.getResources().getColorStateList(resId);
     }
 
+    /**
+     * 获取页面当前专用的皮肤包资源
+     * @param context
+     * @return
+     */
+    private String getSkinName(Context context){
+        return SkinActivityLifecycle.getSkinName(context);
+    }
+
     private Drawable getSkinDrawable(Context context, int resId,String skinName) {
-        if(!TextUtils.isEmpty(skinName)){
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
                 if (colorStateList != null) {
@@ -232,16 +329,16 @@ public class SkinCompatResources {
                     return drawable;
                 }
             }
-            if (mStrategy != null) {
-                Drawable drawable = mStrategy.getDrawable(context, skinName, resId);
+            if (strategy != null) {
+                Drawable drawable = strategy.getDrawable(context, skinName, resId);
                 if (drawable != null) {
                     return drawable;
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getDrawable(targetResId);
+                    return resources.getDrawable(targetResId);
                 }
             }
         }
@@ -252,18 +349,30 @@ public class SkinCompatResources {
     }
 
     private Typeface getSkinFont(Context context,int resId,String skinName){
-        if(!TextUtils.isEmpty(skinName)){
-            if (mStrategy != null) {
-                Typeface font = mStrategy.getFont(context, mSkinName, resId);
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+            if (strategy != null) {
+                Typeface font = strategy.getFont(context, skinName, resId);
                 if (font != null) {
                     return font;
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        return mResources.getFont(targetResId);
+                        return resources.getFont(targetResId);
                     }
                 }
             }
@@ -272,17 +381,30 @@ public class SkinCompatResources {
     }
 
     private int getSkinDimensionSize(Context context,int resId,String skinName){
-        if(!TextUtils.isEmpty(skinName)){
-            if (mStrategy != null) {
-                int size = mStrategy.getSize(context, mSkinName, resId);
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
+            if (strategy != null) {
+                int size = strategy.getSize(context, skinName, resId);
                 if (size != 0) {
                     return size;
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getDimensionPixelSize(targetResId);
+                    return resources.getDimensionPixelSize(targetResId);
                 }
             }
         }
@@ -290,17 +412,30 @@ public class SkinCompatResources {
     }
 
     private float getSkinDimension(Context context,int resId,String skinName){
-        if(!TextUtils.isEmpty(skinName)){
-            if (mStrategy != null) {
-                float size = mStrategy.getDimension(context, mSkinName, resId);
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName) ){
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
+            if (strategy != null) {
+                float size = strategy.getDimension(context, skinName, resId);
                 if (size != 0f) {
                     return size;
                 }
             }
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getDimension(targetResId);
+                    return resources.getDimension(targetResId);
                 }
             }
         }
@@ -315,11 +450,24 @@ public class SkinCompatResources {
     }
 
     private XmlResourceParser getSkinXml(Context context, int resId,String skinName) {
-        if(!TextUtils.isEmpty(skinName)) {
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)) {
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return mResources.getXml(targetResId);
+                    return resources.getXml(targetResId);
                 }
             }
         }
@@ -327,11 +475,24 @@ public class SkinCompatResources {
     }
 
     private void getSkinValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs,String skinName) {
-        if(!TextUtils.isEmpty(skinName)){
-            if (!isDefaultSkin) {
-                int targetResId = getTargetResId(context, resId);
+        String pName = getSkinName(context);
+        if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName) ){
+            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
+            Resources resources = mResources;
+            String pkgName = mSkinPkgName;
+            boolean dSkin = isDefaultSkin;
+            if(TextUtils.isEmpty(skinName)){
+                skinName = pName;
+                strategy = getSkinableStrategy(skinName);
+                resources = getSkinableResource(skinName);
+                pkgName = getSkinablePkgName(skinName);
+                dSkin = false;
+            }
+
+            if (!dSkin) {
+                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName,resId);
                 if (targetResId != 0) {
-                    mResources.getValue(targetResId, outValue, resolveRefs);
+                    resources.getValue(targetResId, outValue, resolveRefs);
                     return;
                 }
             }

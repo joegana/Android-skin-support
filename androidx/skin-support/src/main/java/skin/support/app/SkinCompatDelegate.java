@@ -4,13 +4,12 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import java.lang.ref.WeakReference;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import skin.support.SkinCompatManager;
 import skin.support.annotation.NonNull;
+import skin.support.content.res.SkinCompatResources;
 import skin.support.widget.SkinCompatSupportable;
 
 /**
@@ -21,6 +20,19 @@ public class SkinCompatDelegate implements LayoutInflater.Factory2 {
     private final Context mContext;
     private SkinCompatViewInflater mSkinCompatViewInflater;
     private List<WeakReference<SkinCompatSupportable>> mSkinHelpers = new CopyOnWriteArrayList<>();
+
+    /**
+     * 当前页面页面需要加载的换肤资源名称
+     */
+    private String mSkinName = SkinCompatResources.getInstance().getSkinName();
+
+    public void setSkinName(String mSkinName){
+        this.mSkinName = mSkinName;
+    }
+
+    public String getSkinName(){
+        return mSkinName;
+    }
 
     private SkinCompatDelegate(Context context) {
         mContext = context;

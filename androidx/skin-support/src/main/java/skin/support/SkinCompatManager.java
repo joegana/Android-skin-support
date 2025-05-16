@@ -199,6 +199,15 @@ public class SkinCompatManager extends SkinObservable {
         return sInstance;
     }
 
+    /**
+     * 设置 Context 当前使用的皮肤包名称
+     * @param context
+     * @param skinName
+     */
+    public static void setSkinName(Context context,String skinName){
+        SkinActivityLifecycle.setSkinName(context,skinName);
+    }
+
     public SkinObserver getSkinObserver(Context mContext){
         SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
         if(instance != null){

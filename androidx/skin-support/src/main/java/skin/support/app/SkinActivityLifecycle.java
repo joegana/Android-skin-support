@@ -214,6 +214,42 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
         return false;
     }
 
+    /**
+     * 界定一个Context当前是换肤的Context
+     * @param context
+     * @return
+     */
+    public static boolean skinableContext(Context context){
+        return sInstance != null && sInstance.mSkinDelegateMap.get(context) != null ;
+    }
+
+    /**
+     * 界定一个Context当前是换肤的Context
+     * @param context
+     * @return
+     */
+    public static String getSkinName(Context context){
+        SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
+        if(delegate != null){
+            return delegate.getSkinName();
+        }
+        return SkinCompatResources.getInstance().getSkinName();
+    }
+
+
+    /**
+     * 界定一个Context当前是换肤的Context
+     * @param context
+     * @param skinName
+     * @return
+     */
+    public static void setSkinName(Context context,String skinName){
+        SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
+        if(delegate != null){
+             delegate.setSkinName(skinName);
+        }
+    }
+
 
     private class LazySkinObserver implements SkinObserver {
         private final Context mContext;

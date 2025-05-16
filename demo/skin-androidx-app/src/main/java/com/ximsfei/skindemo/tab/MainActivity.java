@@ -17,6 +17,7 @@ import com.ximsfei.skindemo.tab.fragment.TabFragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import skin.support.SkinCompatManager;
 import skin.support.annotation.Skinable;
 import skin.support.widget.SkinCompatSupportable;
 
@@ -26,11 +27,15 @@ import skin.support.widget.SkinCompatSupportable;
 
 @Skinable
 public class MainActivity extends BaseActivity implements SkinCompatSupportable {
+
+    private boolean isSkinable = true;
+
     private TabFragmentPagerAdapter mTabFragmentPagerAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SkinCompatManager.setSkinName(this,"night.skin");
         setContentView(R.layout.activity_main);
         initToolbar();
         configFragments();
