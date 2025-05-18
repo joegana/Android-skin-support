@@ -7,12 +7,10 @@ import android.os.Build;
 import android.util.AttributeSet;
 import android.view.InflateException;
 import android.view.View;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
-
 import skin.support.SkinCompatManager;
 import skin.support.annotation.NonNull;
 import skin.support.annotation.Nullable;

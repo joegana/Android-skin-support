@@ -15,10 +15,11 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.FontRes;
 import androidx.annotation.XmlRes;
 import androidx.core.content.res.ResourcesCompat;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import  skin.support.SkinCompatManager.SkinLoaderStrategy;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import skin.support.SkinCompatManager;
 import skin.support.annotation.AnyRes;
@@ -26,6 +27,7 @@ import skin.support.annotation.DrawableRes;
 import skin.support.app.SkinActivityLifecycle;
 
 public class SkinCompatResources {
+    private static Logger logger = LoggerFactory.getLogger("Skin.SkinCompatResources");
     private static volatile SkinCompatResources sInstance;
     private Resources mResources;
     private HashMap<String,Resources> mResourcesMap = new HashMap<>();
@@ -196,6 +198,10 @@ public class SkinCompatResources {
                               String targetSkinName,
                               String targetPkgName,
                               int resId) {
+
+        if(targetRes == null){
+            return getTargetResId(context,resId);
+        }
         try {
             String resName = null;
             if (targetStrategy != null) {
@@ -243,7 +249,7 @@ public class SkinCompatResources {
             if (!dSkin) {
                 int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
                 if (targetResId != 0) {
-                    return resources.getColor(targetResId);
+                   return resources.getColor(targetResId);
                 }
             }
         }

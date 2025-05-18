@@ -46,5 +46,6 @@ public class App extends Application {
 //                .setSkinAllActivityEnable(false)                // true: 默认所有的Activity都换肤; false: 只有实现SkinCompatSupportable接口的Activity换肤
                 .loadSkin();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
     }
 }

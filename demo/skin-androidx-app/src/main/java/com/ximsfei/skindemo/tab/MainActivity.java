@@ -34,8 +34,8 @@ public class MainActivity extends BaseActivity implements SkinCompatSupportable 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         SkinCompatManager.setSkinName(this,"night.skin");
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initToolbar();
         configFragments();

@@ -6,16 +6,14 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
-
 import androidx.lifecycle.Lifecycle;
-
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.WeakHashMap;
-
 import skin.support.SkinCompatManager;
 import skin.support.annotation.Skinable;
 import skin.support.content.res.SkinCompatResources;
@@ -26,7 +24,6 @@ import skin.support.utils.Slog;
 import skin.support.view.LayoutInflaterCompat;
 import skin.support.widget.SkinCompatSupportable;
 import skin.support.content.res.SkinCompatThemeUtils;
-
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 import static skin.support.widget.SkinCompatHelper.checkResourceId;
 
@@ -244,6 +241,9 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      * @return
      */
     public static void setSkinName(Context context,String skinName){
+        if(!TextUtils.isEmpty(skinName)){
+            sInstance.getSkinDelegate(context);
+        }
         SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
         if(delegate != null){
              delegate.setSkinName(skinName);

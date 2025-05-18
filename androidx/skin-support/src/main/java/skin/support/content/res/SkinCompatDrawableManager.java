@@ -30,14 +30,10 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.util.Xml;
-
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
-
 import java.lang.ref.WeakReference;
 import java.util.WeakHashMap;
-
-import static androidx.core.graphics.ColorUtils.compositeColors;
 import static skin.support.content.res.SkinCompatThemeUtils.getDisabledThemeAttrColor;
 import static skin.support.content.res.SkinCompatThemeUtils.getThemeAttrColor;
 import static skin.support.content.res.SkinCompatThemeUtils.getThemeAttrColorStateList;

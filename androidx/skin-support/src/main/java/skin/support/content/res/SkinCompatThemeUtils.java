@@ -6,11 +6,8 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.util.TypedValue;
-
 import androidx.annotation.RequiresApi;
-
 import skin.support.graphics.ColorUtils;
-
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 
 /**

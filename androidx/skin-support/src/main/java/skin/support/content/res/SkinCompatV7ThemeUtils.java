@@ -1,7 +1,6 @@
 package skin.support.content.res;
 
 import android.content.Context;
-
 import static skin.support.content.res.SkinCompatThemeUtils.getResId;
 
 /**

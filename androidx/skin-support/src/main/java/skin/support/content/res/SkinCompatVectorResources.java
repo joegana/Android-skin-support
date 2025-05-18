@@ -4,8 +4,10 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.content.res.AppCompatResources;
+import skin.support.app.SkinActivityLifecycle;
 
 public class SkinCompatVectorResources implements SkinResources {
     private static SkinCompatVectorResources sInstance;
@@ -30,9 +32,19 @@ public class SkinCompatVectorResources implements SkinResources {
         SkinCompatDrawableManager.get().clearCaches();
     }
 
+    /**
+     * 获取页面当前专用的皮肤包资源
+     * @param context
+     * @return
+     */
+    private String getSkinName(Context context){
+        return SkinActivityLifecycle.getSkinName(context);
+    }
+
     private Drawable getSkinDrawableCompat(Context context, int resId) {
         if (AppCompatDelegate.isCompatVectorFromResourcesEnabled()) {
-            if (!SkinCompatResources.getInstance().isDefaultSkin()) {
+            String pSkinName = getSkinName(context);
+            if (!SkinCompatResources.getInstance().isDefaultSkin() || !TextUtils.isEmpty(pSkinName)) {
                 try {
                     return SkinCompatDrawableManager.get().getDrawable(context, resId);
                 } catch (Exception e) {

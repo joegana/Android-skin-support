@@ -8,23 +8,19 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.WeakHashMap;
-
 import skin.support.SkinCompatManager;
 import skin.support.annotation.ColorRes;
 import skin.support.annotation.DrawableRes;
 import skin.support.utils.ImageUtils;
 import skin.support.utils.SkinPreference;
 import skin.support.utils.Slog;
-
 import static skin.support.content.res.ColorState.checkColorValid;
 import static skin.support.content.res.ColorState.toJSONObject;
 
