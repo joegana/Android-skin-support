@@ -13,6 +13,8 @@ import android.util.TypedValue;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.lang.reflect.Field;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import skin.support.R;
 import skin.support.content.res.SkinCompatResources;
 import skin.support.content.res.SkinCompatVectorResources;
@@ -22,6 +24,7 @@ import skin.support.content.res.SkinCompatVectorResources;
  */
 
 public class SkinCompatTextHelper extends SkinCompatHelper {
+    private static Logger logger = LoggerFactory.getLogger("Skin.SkinCompatTextHelper");
     private static final String TAG = SkinCompatTextHelper.class.getSimpleName();
 
     public static SkinCompatTextHelper create(TextView textView) {

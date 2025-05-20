@@ -59,6 +59,7 @@ afterEvaluate {
 
 dependencies {
     implementation 'androidx.percentlayout:percentlayout:1.0.0'
+    implementation "com.moorgen.sdk:common:1.7.6.3"
     implementation project(':androidx:skin-support')
     implementation project(':androidx:skin-support-appcompat')
 }

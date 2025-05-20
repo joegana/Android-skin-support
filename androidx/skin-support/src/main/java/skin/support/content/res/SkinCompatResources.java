@@ -67,6 +67,9 @@ public class SkinCompatResources {
         mSkinPkgName = "";
         mSkinName = "";
         mStrategy = strategy;
+        mResourcesMap.put("default",mResources);
+        mSkinPackageName.put("default", SkinCompatManager.getInstance().getContext().getPackageName());
+        mSkinStrategy.put("default",strategy);
         isDefaultSkin = true;
         SkinCompatUserThemeManager.get().clearCaches();
         for (SkinResources skinResources : mSkinResources) {
