@@ -1,5 +1,7 @@
 package skin.support.content.res;
 
+import static skin.support.utils.SkinPreference.DEFAULT_SKIN_NAME;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -67,9 +69,9 @@ public class SkinCompatResources {
         mSkinPkgName = "";
         mSkinName = "";
         mStrategy = strategy;
-        mResourcesMap.put("default",mResources);
-        mSkinPackageName.put("default", SkinCompatManager.getInstance().getContext().getPackageName());
-        mSkinStrategy.put("default",strategy);
+        mResourcesMap.put(DEFAULT_SKIN_NAME,mResources);
+        mSkinPackageName.put(DEFAULT_SKIN_NAME, SkinCompatManager.getInstance().getContext().getPackageName());
+        mSkinStrategy.put(DEFAULT_SKIN_NAME,strategy);
         isDefaultSkin = true;
         SkinCompatUserThemeManager.get().clearCaches();
         for (SkinResources skinResources : mSkinResources) {
@@ -224,17 +226,14 @@ public class SkinCompatResources {
     private int getSkinColor(Context context, int resId,String skinName) {
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)) {
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
+
 
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
@@ -265,17 +264,13 @@ public class SkinCompatResources {
     private ColorStateList getSkinColorStateList(Context context, int resId,String skinName) {
         String pName = getSkinName(context) ;
         if(!TextUtils.isEmpty(skinName)  || !TextUtils.isEmpty(pName)) {
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
 
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
@@ -315,17 +310,14 @@ public class SkinCompatResources {
     private Drawable getSkinDrawable(Context context, int resId,String skinName) {
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
+
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
                 ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
                 if (colorStateList != null) {
@@ -360,17 +352,14 @@ public class SkinCompatResources {
     private Typeface getSkinFont(Context context,int resId,String skinName){
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
+
             if (strategy != null) {
                 Typeface font = strategy.getFont(context, skinName, resId);
                 if (font != null) {
@@ -392,17 +381,13 @@ public class SkinCompatResources {
     private int getSkinDimensionSize(Context context,int resId,String skinName){
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
 
             if (strategy != null) {
                 int size = strategy.getSize(context, skinName, resId);
@@ -423,17 +408,13 @@ public class SkinCompatResources {
     private float getSkinDimension(Context context,int resId,String skinName){
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName) ){
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
 
             if (strategy != null) {
                 float size = strategy.getDimension(context, skinName, resId);
@@ -461,17 +442,13 @@ public class SkinCompatResources {
     private XmlResourceParser getSkinXml(Context context, int resId,String skinName) {
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)) {
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
 
             if (!dSkin) {
                 int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
@@ -486,17 +463,13 @@ public class SkinCompatResources {
     private void getSkinValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs,String skinName) {
         String pName = getSkinName(context);
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName) ){
-            SkinCompatManager.SkinLoaderStrategy strategy = mStrategy;
-            Resources resources = mResources;
-            String pkgName = mSkinPkgName;
-            boolean dSkin = isDefaultSkin;
-            if(TextUtils.isEmpty(skinName)){
+            if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
-                strategy = getSkinableStrategy(skinName);
-                resources = getSkinableResource(skinName);
-                pkgName = getSkinablePkgName(skinName);
-                dSkin = false;
             }
+            boolean dSkin = false;
+            SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
+            Resources resources = getSkinableResource(skinName);
+            String  pkgName = getSkinablePkgName(skinName);
 
             if (!dSkin) {
                 int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName,resId);

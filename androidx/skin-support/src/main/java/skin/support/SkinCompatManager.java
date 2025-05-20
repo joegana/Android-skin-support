@@ -1,5 +1,7 @@
 package skin.support;
 
+import static skin.support.utils.SkinPreference.DEFAULT_SKIN_NAME;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -33,6 +35,7 @@ import skin.support.utils.SkinPreference;
 import skin.support.content.res.SkinCompatResources;
 
 public class SkinCompatManager extends SkinObservable {
+    public static final String  DEFAULT_SKIN_NAME = SkinPreference.DEFAULT_SKIN_NAME;
     public static final int SKIN_LOADER_STRATEGY_NONE = -1;
     public static final int SKIN_LOADER_STRATEGY_ASSETS = 0;
     public static final int SKIN_LOADER_STRATEGY_BUILD_IN = 1;
@@ -422,7 +425,7 @@ public class SkinCompatManager extends SkinObservable {
         SkinCompatResources skinRes =  SkinCompatResources.getInstance();
          Resources resources = skinRes.getSkinResources(skinName);
          boolean notifySkinChanged = false ;
-        if(resources != null){
+        if(resources != null && !DEFAULT_SKIN_NAME.equals(skinName)){
             SkinCompatResources.getInstance().setupSkin(
                     resources,
                     skinRes.getSkinPkgName(skinName),
@@ -431,7 +434,7 @@ public class SkinCompatManager extends SkinObservable {
             SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
                     skinRes.getStrategy(skinName).getType()).commitEditor();
             notifySkinChanged = true;
-        }else if(TextUtils.isEmpty(skinName)){
+        }else if(TextUtils.isEmpty(skinName) || DEFAULT_SKIN_NAME.equals(skinName)){
             SkinCompatResources.getInstance().reset();
             SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE).commitEditor();
             notifySkinChanged = true;

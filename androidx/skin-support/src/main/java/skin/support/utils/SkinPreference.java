@@ -12,6 +12,7 @@ import skin.support.SkinCompatManager;
 public class SkinPreference {
     private static final String FILE_NAME = "meta-data";
 
+    public static final String  DEFAULT_SKIN_NAME = "default";
     private static final String KEY_SKIN_NAME = "skin-name";
     private static final String KEY_SKIN_STRATEGY = "skin-strategy";
     private static final String KEY_SKIN_USER_THEME = "skin-user-theme-json";
