@@ -179,10 +179,11 @@ public class SkinCompatManager extends SkinObservable {
             synchronized (SkinCompatManager.class) {
                 if (sInstance == null) {
                     sInstance = new SkinCompatManager(context);
+                    SkinPreference.init(context);
+                    SkinCompatResources.getInstance().reset();//重置皮肤资源到默认
                 }
             }
         }
-        SkinPreference.init(context);
         return sInstance;
     }
 
