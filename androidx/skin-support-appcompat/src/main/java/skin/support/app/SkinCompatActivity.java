@@ -6,13 +6,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.LayoutInflaterCompat;
 import androidx.appcompat.app.AppCompatActivity;
-
 import skin.support.SkinCompatManager;
 import skin.support.content.res.SkinCompatThemeUtils;
 import skin.support.content.res.SkinCompatVectorResources;
 import skin.support.observe.SkinObservable;
 import skin.support.observe.SkinObserver;
-
 import static skin.support.widget.SkinCompatHelper.INVALID_ID;
 import static skin.support.widget.SkinCompatHelper.checkResourceId;
 

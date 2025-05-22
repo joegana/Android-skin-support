@@ -1,6 +1,5 @@
 package skin.support;
 
-import static skin.support.utils.SkinPreference.DEFAULT_SKIN_NAME;
 
 import android.app.Application;
 import android.content.Context;
@@ -15,9 +14,8 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import androidx.annotation.DimenRes;
 import androidx.annotation.FontRes;
-
+import androidx.core.content.ContextCompat;
 import com.moorgen.sdk.common.CUtilKt;
-
 import java.util.ArrayList;
 import java.util.List;
 import skin.support.annotation.NonNull;
@@ -169,8 +167,6 @@ public class SkinCompatManager extends SkinObservable {
     }
 
     /**
-     * 初始化换肤框架. 通过该方法初始化，应用中Activity需继承自{@link skin.support.app.SkinCompatActivity}.
-     *
      * @param context
      * @return
      */
@@ -192,7 +188,7 @@ public class SkinCompatManager extends SkinObservable {
     }
 
     /**
-     * 初始化换肤框架，监听Activity生命周期. 通过该方法初始化，应用中Activity无需继承{@link skin.support.app.SkinCompatActivity}.
+     * 初始化换肤框架，监听Activity生命周期. 通过该方法初始化.
      *
      * @param application 应用Application.
      * @return
@@ -262,8 +258,6 @@ public class SkinCompatManager extends SkinObservable {
 
     /**
      * 自定义View换肤时，可选择添加一个{@link SkinLayoutInflater}
-     *
-     * @param inflater 在{@link skin.support.app.SkinCompatViewInflater#createView(Context, String, String)}方法中调用.
      * @return
      */
     public SkinCompatManager addInflater(SkinLayoutInflater inflater) {
@@ -285,8 +279,6 @@ public class SkinCompatManager extends SkinObservable {
 
     /**
      * 自定义View换肤时，可选择添加一个{@link SkinLayoutInflater}
-     *
-     * @param inflater 在{@link skin.support.app.SkinCompatViewInflater#createView(Context, String, String)}方法中最先调用.
      * @return
      */
     @Deprecated
@@ -364,37 +356,53 @@ public class SkinCompatManager extends SkinObservable {
      * @return
      */
     public AsyncTask loadSkin() {
-        String skin = SkinPreference.getInstance().getSkinName();
-        int strategy = SkinPreference.getInstance().getSkinStrategy();
-        if (TextUtils.isEmpty(skin) || strategy == SKIN_LOADER_STRATEGY_NONE) {
-            return null;
-        }
-        return loadSkin(skin, null, strategy);
+       return  innerLoadSkin(null,false);
+    }
+
+    public AsyncTask syncLoadSkin() {
+        return innerLoadSkin(null,true);
     }
 
     /**
      * 加载记录的皮肤包，一般在Application中初始化换肤框架后调用.
-     *
      * @param listener 皮肤包加载监听.
      * @return
      */
     public AsyncTask loadSkin(SkinLoaderListener listener) {
+        return innerLoadSkin(listener,false);
+    }
+
+    public AsyncTask syncLoadSkin(SkinLoaderListener listener) {
+        return innerLoadSkin(listener,true);
+    }
+
+    private AsyncTask innerLoadSkin(SkinLoaderListener listener,Boolean main){
         String skin = SkinPreference.getInstance().getSkinName();
         int strategy = SkinPreference.getInstance().getSkinStrategy();
         if (TextUtils.isEmpty(skin) || strategy == SKIN_LOADER_STRATEGY_NONE) {
             return null;
         }
-        return loadSkin(skin, listener, strategy);
+        return loadSkin(skin, listener, strategy,main);
     }
 
     @Deprecated
     public AsyncTask loadSkin(String skinName) {
         return loadSkin(skinName, null);
     }
+    @Deprecated
+    public AsyncTask syncLoadSkin(String skinName) {
+        return loadSkin(skinName, null,SKIN_LOADER_STRATEGY_ASSETS,true);
+    }
+
 
     @Deprecated
     public AsyncTask loadSkin(String skinName, final SkinLoaderListener listener) {
-        return loadSkin(skinName, listener, SKIN_LOADER_STRATEGY_ASSETS);
+        return loadSkin(skinName, listener, SKIN_LOADER_STRATEGY_ASSETS,false);
+    }
+
+    @Deprecated
+    public AsyncTask syncLoadSkin(String skinName, final SkinLoaderListener listener) {
+        return loadSkin(skinName, listener, SKIN_LOADER_STRATEGY_ASSETS,true);
     }
 
      /**
@@ -406,7 +414,20 @@ public class SkinCompatManager extends SkinObservable {
      */
      @androidx.annotation.Nullable
     public AsyncTask loadSkin(String skinName, int strategy) {
-        return loadSkin(skinName, null, strategy);
+        return loadSkin(skinName, null, strategy,false);
+    }
+
+    @androidx.annotation.Nullable
+    public AsyncTask syncLoadSkin(String skinName, int strategy) {
+        return loadSkin(skinName, null, strategy,true);
+    }
+
+    public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy){
+        return loadSkin(skinName, listener, strategy,false);
+    }
+
+    public AsyncTask syncLoadSkin(String skinName, SkinLoaderListener listener, int strategy){
+        return loadSkin(skinName, listener, strategy,true);
     }
 
      /**
@@ -418,7 +439,7 @@ public class SkinCompatManager extends SkinObservable {
      * @return
      */
      @androidx.annotation.Nullable
-    public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy) {
+    public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy,boolean main) {
         SkinLoaderStrategy loaderStrategy = mStrategyMap.get(strategy);
         if (loaderStrategy == null) {
             return null;
@@ -449,7 +470,9 @@ public class SkinCompatManager extends SkinObservable {
             });
             return null ;
         }
-        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
+
+        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(
+                main? ContextCompat.getMainExecutor(mAppContext):AsyncTask.THREAD_POOL_EXECUTOR, skinName);
     }
 
     private class SkinLoadTask extends AsyncTask<String, Void, String> {

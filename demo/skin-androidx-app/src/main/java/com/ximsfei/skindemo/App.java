@@ -44,7 +44,7 @@ public class App extends Application {
                 .setSkinStatusBarColorEnable(true)              // 关闭状态栏换肤
 //                .setSkinWindowBackgroundEnable(false)           // 关闭windowBackground换肤
 //                .setSkinAllActivityEnable(false)                // true: 默认所有的Activity都换肤; false: 只有实现SkinCompatSupportable接口的Activity换肤
-                .loadSkin();
+                .syncLoadSkin();
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
     }
