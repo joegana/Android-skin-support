@@ -14,7 +14,6 @@ import android.text.TextUtils;
 import android.util.SparseArray;
 import androidx.annotation.DimenRes;
 import androidx.annotation.FontRes;
-import androidx.core.content.ContextCompat;
 import com.moorgen.sdk.common.CUtilKt;
 import java.util.ArrayList;
 import java.util.List;
@@ -439,7 +438,7 @@ public class SkinCompatManager extends SkinObservable {
      * @return
      */
      @androidx.annotation.Nullable
-    public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy,boolean main) {
+    public AsyncTask loadSkin(String skinName, SkinLoaderListener listener, int strategy,boolean sync) {
         SkinLoaderStrategy loaderStrategy = mStrategyMap.get(strategy);
         if (loaderStrategy == null) {
             return null;
@@ -448,17 +447,18 @@ public class SkinCompatManager extends SkinObservable {
          Resources resources = skinRes.getSkinResources(skinName);
          boolean notifySkinChanged = false ;
         if(resources != null && !DEFAULT_SKIN_NAME.equals(skinName)){
+            SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
+                    skinRes.getStrategy(skinName).getType());
             SkinCompatResources.getInstance().setupSkin(
                     resources,
                     skinRes.getSkinPkgName(skinName),
                     skinName,
                     skinRes.getStrategy(skinName));
-            SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(
-                    skinRes.getStrategy(skinName).getType()).commitEditor();
             notifySkinChanged = true;
         }else if(TextUtils.isEmpty(skinName) || DEFAULT_SKIN_NAME.equals(skinName)){
+            SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE);
             SkinCompatResources.getInstance().reset();
-            SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE).commitEditor();
+
             notifySkinChanged = true;
         }
         if(notifySkinChanged){
@@ -470,16 +470,22 @@ public class SkinCompatManager extends SkinObservable {
             });
             return null ;
         }
-
-        return new SkinLoadTask(listener, loaderStrategy).executeOnExecutor(
-                main? ContextCompat.getMainExecutor(mAppContext):AsyncTask.THREAD_POOL_EXECUTOR, skinName);
+         SkinLoadTask task =   new SkinLoadTask(listener, loaderStrategy);
+         if(sync){
+             task.onPreExecute();
+             task.doInBackground(skinName);
+             task.onPostExecute(skinName);
+         }else{
+             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, skinName);
+         }
+         return task ;
     }
 
     private class SkinLoadTask extends AsyncTask<String, Void, String> {
         private final SkinLoaderListener mListener;
         private final SkinLoaderStrategy mStrategy;
-
-        SkinLoadTask(@Nullable SkinLoaderListener listener, @NonNull SkinLoaderStrategy strategy) {
+        SkinLoadTask(@Nullable SkinLoaderListener listener,
+                     @NonNull SkinLoaderStrategy strategy) {
             mListener = listener;
             mStrategy = strategy;
         }
@@ -519,25 +525,29 @@ public class SkinCompatManager extends SkinObservable {
             return null;
         }
 
+        private void notify(String skinName){
+            if (skinName != null) {
+                SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(mStrategy.getType());
+                notifyUpdateSkin();
+                if (mListener != null) {
+                    mListener.onSuccess();
+                }
+            } else {
+                SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE);
+                if (mListener != null) {
+                    mListener.onFailed("皮肤资源获取失败");
+                }
+            }
+        }
+
         @Override
         protected void onPostExecute(String skinName) {
             synchronized (mLock) {
                 // skinName 为""时，恢复默认皮肤
-                if (skinName != null) {
-                    SkinPreference.getInstance().setSkinName(skinName).setSkinStrategy(mStrategy.getType()).commitEditor();
-                    notifyUpdateSkin();
-                    if (mListener != null) {
-                        mListener.onSuccess();
-                    }
-                } else {
-                    SkinPreference.getInstance().setSkinName("").setSkinStrategy(SKIN_LOADER_STRATEGY_NONE).commitEditor();
-                    if (mListener != null) {
-                        mListener.onFailed("皮肤资源获取失败");
-                    }
-                }
-                mLoading = false;
+                notify(skinName);
                 mLock.notifyAll();
             }
+            mLoading = false;
         }
     }
 

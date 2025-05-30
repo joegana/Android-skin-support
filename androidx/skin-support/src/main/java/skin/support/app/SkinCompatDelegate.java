@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import skin.support.SkinCompatManager;
 import skin.support.annotation.NonNull;
-import skin.support.content.res.SkinCompatResources;
 import skin.support.widget.SkinCompatSupportable;
 
 /**
@@ -24,7 +23,7 @@ public class SkinCompatDelegate implements LayoutInflater.Factory2 {
     /**
      * 当前页面页面需要加载的换肤资源名称
      */
-    private String mSkinName = SkinCompatResources.getInstance().getSkinName();
+    private String mSkinName = null;
 
     public void setSkinName(String mSkinName){
         this.mSkinName = mSkinName;

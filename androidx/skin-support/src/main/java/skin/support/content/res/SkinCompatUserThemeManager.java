@@ -112,7 +112,7 @@ public class SkinCompatUserThemeManager {
         if (Slog.DEBUG) {
             Slog.i(TAG, "Apply user theme: " + jsonArray.toString());
         }
-        SkinPreference.getInstance().setUserTheme(jsonArray.toString()).commitEditor();
+        SkinPreference.getInstance().setUserTheme(jsonArray.toString());
         SkinCompatManager.getInstance().notifyUpdateSkin();
     }
 
