@@ -226,10 +226,14 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      */
     public static String getSkinName(Context context){
         SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
+        String skinName = null;
         if(delegate != null){
-            return delegate.getSkinName();
+            skinName = delegate.getSkinName();
         }
-        return SkinCompatResources.getInstance().getSkinName();
+        if(skinName == null){
+            skinName = SkinCompatResources.getInstance().getSkinName();
+        }
+        return  skinName;
     }
 
 
