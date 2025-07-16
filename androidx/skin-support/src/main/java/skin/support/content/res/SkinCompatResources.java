@@ -483,35 +483,35 @@ public class SkinCompatResources {
     }
 
     public static int getColor(Context context, @ColorRes int resId) {
-        return getInstance().getSkinColor(context, resId, getInstance().getSkinName());
+        return getInstance().getSkinColor(context, resId, getInstance().getSkinName(context));
     }
 
     public static ColorStateList getColorStateList(Context context,@ColorRes int resId) {
-        return getInstance().getSkinColorStateList(context, resId,getInstance().getSkinName());
+        return getInstance().getSkinColorStateList(context, resId,getInstance().getSkinName(context));
     }
 
     public static Drawable getDrawable(Context context, @DrawableRes  int resId) {
-        return getInstance().getSkinDrawable(context, resId,getInstance().getSkinName());
+        return getInstance().getSkinDrawable(context, resId,getInstance().getSkinName(context));
     }
 
     public static XmlResourceParser getXml(Context context, @XmlRes  int resId) {
-        return getInstance().getSkinXml(context, resId,getInstance().getSkinName());
+        return getInstance().getSkinXml(context, resId,getInstance().getSkinName(context));
     }
 
     public static void getValue(Context context, @AnyRes int resId, TypedValue outValue, boolean resolveRefs) {
-        getInstance().getSkinValue(context, resId, outValue, resolveRefs,getInstance().getSkinName());
+        getInstance().getSkinValue(context, resId, outValue, resolveRefs,getInstance().getSkinName(context));
     }
 
     public static Typeface getFont(Context context,@FontRes  int resId){
-        return getInstance().getSkinFont(context,resId,getInstance().getSkinName());
+        return getInstance().getSkinFont(context,resId,getInstance().getSkinName(context));
     }
 
     public static int getSize(Context context,@DimenRes int resId){
-        return getInstance().getSkinDimensionSize(context,resId,getInstance().getSkinName());
+        return getInstance().getSkinDimensionSize(context,resId,getInstance().getSkinName(context));
     }
 
     public static float getDimension(Context context,@DimenRes int resId){
-        return getInstance().getSkinDimension(context,resId,getInstance().getSkinName());
+        return getInstance().getSkinDimension(context,resId,getInstance().getSkinName(context));
     }
 
 

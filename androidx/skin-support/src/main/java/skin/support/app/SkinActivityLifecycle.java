@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import androidx.lifecycle.Lifecycle;
 import java.lang.ref.WeakReference;
@@ -241,7 +240,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      * @return
      */
     public static void setSkinName(Context context,String skinName){
-        if(!TextUtils.isEmpty(skinName)){
+        if(skinName != null && context != null){
             sInstance.getSkinDelegate(context);
         }
         SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
