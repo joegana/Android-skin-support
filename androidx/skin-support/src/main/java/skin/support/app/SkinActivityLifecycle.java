@@ -7,6 +7,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+
+import androidx.annotation.RestrictTo;
 import androidx.lifecycle.Lifecycle;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
@@ -191,7 +193,8 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
         }
     }
 
-    private boolean isContextSkinEnable(Context context) {
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
+    private   boolean isContextSkinEnable(Context context) {
         Skinable skinable = context.getClass().getAnnotation(Skinable.class);
         return SkinCompatManager.getInstance().isSkinAllActivityEnable()
                 || (skinable != null && skinable.value())
@@ -199,7 +202,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
                 || isSkinable(context) ;
     }
 
-    private boolean isSkinable(Context context){
+    private  boolean isSkinable(Context context){
         try {
             Field field = context.getClass().getDeclaredField("isSkinable");
             field.setAccessible(true);
@@ -215,6 +218,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      * @param context
      * @return
      */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     public static boolean skinableContext(Context context){
         return sInstance != null && sInstance.mSkinDelegateMap.get(context) != null ;
     }
@@ -224,6 +228,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      * @param context
      * @return
      */
+    @RestrictTo(RestrictTo.Scope.LIBRARY)
     public static String getSkinName(Context context){
         SkinCompatDelegate delegate = sInstance.mSkinDelegateMap.get(context);
         String skinName = null;
