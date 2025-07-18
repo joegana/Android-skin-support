@@ -207,7 +207,6 @@ public class SkinCompatManager extends SkinObservable {
         SkinActivityLifecycle.setSkinName(context,skinName);
     }
 
-
     /**
      * 界定一个Context当前是否是换肤的Context
      * @param context

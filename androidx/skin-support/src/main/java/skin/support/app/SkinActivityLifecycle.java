@@ -13,6 +13,7 @@ import androidx.lifecycle.Lifecycle;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import skin.support.SkinCompatManager;
@@ -31,6 +32,7 @@ import static skin.support.widget.SkinCompatHelper.checkResourceId;
 public class SkinActivityLifecycle implements Application.ActivityLifecycleCallbacks {
     private static final String TAG = "SkinActivityLifecycle";
     private static volatile SkinActivityLifecycle sInstance = null;
+    private HashMap<Context,Boolean> isSkinnable;
     private WeakHashMap<Context, SkinCompatDelegate> mSkinDelegateMap;
     private WeakHashMap<Context, LazySkinObserver> mSkinObserverMap;
     private WeakHashMap<Context, Lifecycle.Event> mActivityStateMap;
@@ -196,10 +198,15 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     private   boolean isContextSkinEnable(Context context) {
         Skinable skinable = context.getClass().getAnnotation(Skinable.class);
-        return SkinCompatManager.getInstance().isSkinAllActivityEnable()
+        boolean isSkin =  SkinCompatManager.getInstance().isSkinAllActivityEnable()
                 || (skinable != null && skinable.value())
                 || context instanceof SkinCompatSupportable
                 || isSkinable(context) ;
+        if(isSkinnable == null){
+            isSkinnable = new HashMap<>();
+        }
+        isSkinnable.put(context,isSkin);
+        return isSkin;
     }
 
     private  boolean isSkinable(Context context){
@@ -220,7 +227,8 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY)
     public static boolean skinableContext(Context context){
-        return sInstance != null && sInstance.mSkinDelegateMap.get(context) != null ;
+        return sInstance != null &&  sInstance.isSkinnable != null
+                && Boolean.TRUE.equals(sInstance.isSkinnable.get(context));
     }
 
     /**
