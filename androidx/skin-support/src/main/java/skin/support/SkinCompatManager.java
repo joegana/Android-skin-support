@@ -216,6 +216,15 @@ public class SkinCompatManager extends SkinObservable {
         return SkinActivityLifecycle.skinableContext(context);
     }
 
+    /**
+     * 获取一个Context当前的皮肤资源名称
+     * @param context
+     * @return
+     */
+    public static String getSkinName(Context context){
+        return SkinActivityLifecycle.getSkinName(context);
+    }
+
     public SkinObserver getSkinObserver(Context mContext){
         SkinActivityLifecycle instance = SkinActivityLifecycle.init(null);
         if(instance != null){
