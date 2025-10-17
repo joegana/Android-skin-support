@@ -97,14 +97,14 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
             mTextColorHintResId = a.getResourceId(
                     R.styleable.SkinTextAppearance_android_textColorHint, INVALID_ID);
         }
-        if(a.hasValue(R.styleable.SkinTextAppearance_android_font)){
-            mTextFontResId  = a.getResourceId(
-                    R.styleable.SkinTextAppearance_android_font, INVALID_ID);
-        }
-        if(mTextFontResId == INVALID_ID && a.hasValue(R.styleable.SkinTextAppearance_android_fontFamily)){
-            mTextFontResId  = a.getResourceId(
-                    R.styleable.SkinTextAppearance_android_fontFamily, INVALID_ID);
-        }
+//        if(a.hasValue(R.styleable.SkinTextAppearance_android_font)){
+//            mTextFontResId  = a.getResourceId(
+//                    R.styleable.SkinTextAppearance_android_font, INVALID_ID);
+//        }
+//        if(mTextFontResId == INVALID_ID && a.hasValue(R.styleable.SkinTextAppearance_android_fontFamily)){
+//            mTextFontResId  = a.getResourceId(
+//                    R.styleable.SkinTextAppearance_android_fontFamily, INVALID_ID);
+//        }
         if(a.hasValue(R.styleable.SkinTextAppearance_android_textSize)){
             mTextSizeResId  = a.getResourceId(
                     R.styleable.SkinTextAppearance_android_textSize, INVALID_ID);
@@ -279,13 +279,13 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
     }
 
     protected void applyTextSizeFontResource(){
-        mTextFontResId = checkResourceId(mTextFontResId);
-        if (mTextFontResId != INVALID_ID) {
-            Typeface font = SkinCompatResources.getFont(mView.getContext(), mTextFontResId);
-            if(font != null){
-                mView.setTypeface(font);
-            }
-        }
+//        mTextFontResId = checkResourceId(mTextFontResId);
+//        if (mTextFontResId != INVALID_ID) {
+//            Typeface font = SkinCompatResources.getFont(mView.getContext(), mTextFontResId);
+//            if(font != null){
+//                mView.setTypeface(font);
+//            }
+//        }
 
         mTextSizeResId = checkResourceId(mTextSizeResId);
         if (mTextSizeResId != INVALID_ID) {
