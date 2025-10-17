@@ -109,8 +109,8 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
             SkinCompatManager.getInstance().deleteObserver(getObserver(activity));
             mSkinObserverMap.remove(activity);
             mSkinDelegateMap.remove(activity);
-            isSkinnable.remove(activity);
         }
+        isSkinnable.remove(activity);
         mActivityStateMap.remove(activity);
     }
 
