@@ -32,7 +32,7 @@ import static skin.support.widget.SkinCompatHelper.checkResourceId;
 public class SkinActivityLifecycle implements Application.ActivityLifecycleCallbacks {
     private static final String TAG = "SkinActivityLifecycle";
     private static volatile SkinActivityLifecycle sInstance = null;
-    private HashMap<Context,Boolean> isSkinnable;
+    private WeakHashMap<Context,Boolean> isSkinnable;
     private WeakHashMap<Context, SkinCompatDelegate> mSkinDelegateMap;
     private WeakHashMap<Context, LazySkinObserver> mSkinObserverMap;
     private WeakHashMap<Context, Lifecycle.Event> mActivityStateMap;
@@ -109,6 +109,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
             SkinCompatManager.getInstance().deleteObserver(getObserver(activity));
             mSkinObserverMap.remove(activity);
             mSkinDelegateMap.remove(activity);
+            isSkinnable.remove(activity);
         }
         mActivityStateMap.remove(activity);
     }
@@ -203,7 +204,7 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
                 || context instanceof SkinCompatSupportable
                 || isSkinable(context) ;
         if(isSkinnable == null){
-            isSkinnable = new HashMap<>();
+            isSkinnable = new WeakHashMap<>();
         }
         isSkinnable.put(context,isSkin);
         return isSkin;
