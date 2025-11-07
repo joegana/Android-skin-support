@@ -263,39 +263,55 @@ public class SkinCompatResources {
 
     private ColorStateList getSkinColorStateList(Context context, int resId,String skinName) {
         String pName = getSkinName(context) ;
+        ColorStateList colorStateList = null ;
         if(!TextUtils.isEmpty(skinName)  || !TextUtils.isEmpty(pName)) {
             if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
             }
-            boolean dSkin = false;
+
             SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
             Resources resources = getSkinableResource(skinName);
             String  pkgName = getSkinablePkgName(skinName);
-
             if (!SkinCompatUserThemeManager.get().isColorEmpty()) {
-                ColorStateList colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
+                 colorStateList = SkinCompatUserThemeManager.get().getColorStateList(resId);
                 if (colorStateList != null) {
                     return colorStateList;
                 }
             }
 
             if (strategy != null) {
-                ColorStateList colorStateList = strategy.getColorStateList(context, skinName, resId);
+                 colorStateList = strategy.getColorStateList(context, skinName, resId);
                 if (colorStateList != null) {
                     return colorStateList;
                 }
             }
-            if (!dSkin) {
-                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
-                if (targetResId != 0) {
-                    return resources.getColorStateList(targetResId);
+
+            int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
+            if (targetResId != 0) {
+                try {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        colorStateList =  resources.getColorStateList(targetResId,context.getTheme());
+                    }else{
+                        colorStateList =  resources.getColorStateList(targetResId);
+                    }
+                }catch (Exception e){
+                    logger.warn("getSkinColorStateList :skinName:{} resId:{},error:{}",skinName,resId,e.toString());
+                }
+                if(colorStateList != null){
+                    return colorStateList;
                 }
             }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return context.getResources().getColorStateList(resId, context.getTheme());
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                colorStateList =  context.getResources().getColorStateList(resId, context.getTheme());
+            }else{
+                colorStateList = context.getResources().getColorStateList(resId);
+            }
+        }catch (Exception e){
+            logger.warn("getSkinColorStateList 2 :skinName:{} resId:{},error:{}",skinName,resId,e.toString());
         }
-        return context.getResources().getColorStateList(resId);
+        return colorStateList;
     }
 
     /**
@@ -309,11 +325,11 @@ public class SkinCompatResources {
 
     private Drawable getSkinDrawable(Context context, int resId,String skinName) {
         String pName = getSkinName(context);
+        Drawable drawable = null;
         if(!TextUtils.isEmpty(skinName) || !TextUtils.isEmpty(pName)){
             if(!TextUtils.isEmpty(pName)){
                 skinName = pName;
             }
-            boolean dSkin = false;
             SkinCompatManager.SkinLoaderStrategy  strategy = getSkinableStrategy(skinName);;
             Resources resources = getSkinableResource(skinName);
             String  pkgName = getSkinablePkgName(skinName);
@@ -325,28 +341,40 @@ public class SkinCompatResources {
                 }
             }
             if (!SkinCompatUserThemeManager.get().isDrawableEmpty()) {
-                Drawable drawable = SkinCompatUserThemeManager.get().getDrawable(resId);
+                drawable = SkinCompatUserThemeManager.get().getDrawable(resId);
                 if (drawable != null) {
                     return drawable;
                 }
             }
             if (strategy != null) {
-                Drawable drawable = strategy.getDrawable(context, skinName, resId);
+                 drawable = strategy.getDrawable(context, skinName, resId);
                 if (drawable != null) {
                     return drawable;
                 }
             }
-            if (!dSkin) {
-                int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
-                if (targetResId != 0) {
-                    return resources.getDrawable(targetResId);
+
+            int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
+            if (targetResId != 0) {
+                try {
+                    drawable =  resources.getDrawable(targetResId,context.getTheme());
+                }catch (Exception e){
+                    logger.warn("getSkinDrawable:skinName = {},resId = {},error:{}",skinName,resId,e.toString());
+                }
+                if(drawable != null){
+                    return  drawable;
                 }
             }
         }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return context.getResources().getDrawable(resId, context.getTheme());
+        try {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                drawable =  context.getResources().getDrawable(resId, context.getTheme());
+            }else{
+                drawable =  context.getResources().getDrawable(resId);
+            }
+        }catch (Exception e){
+            logger.warn("getSkinDrawable 2:skinName = {},resId = {},error:{}",skinName,resId,e.toString());
         }
-        return context.getResources().getDrawable(resId);
+        return drawable;
     }
 
     private Typeface getSkinFont(Context context,int resId,String skinName){
