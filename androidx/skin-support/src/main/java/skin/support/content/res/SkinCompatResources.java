@@ -290,7 +290,7 @@ public class SkinCompatResources {
             if (targetResId != 0) {
                 try {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        colorStateList =  resources.getColorStateList(targetResId,context.getTheme());
+                        colorStateList =  resources.getColorStateList(targetResId,null);
                     }else{
                         colorStateList =  resources.getColorStateList(targetResId);
                     }
@@ -356,7 +356,7 @@ public class SkinCompatResources {
             int targetResId = getTargetResId(context,resources,strategy,skinName,pkgName, resId);
             if (targetResId != 0) {
                 try {
-                    drawable =  resources.getDrawable(targetResId,context.getTheme());
+                    drawable =  resources.getDrawable(targetResId,null);
                 }catch (Exception e){
                     logger.warn("getSkinDrawable:skinName = {},resId = {},error:{}",skinName,resId,e.toString());
                 }
