@@ -152,6 +152,7 @@ public class SkinCompatTextHelper extends SkinCompatHelper {
                 ColorStateList color = SkinCompatResources.getColorStateList(mView.getContext(), mTextColorResId);
                 mView.setTextColor(color);
             } catch (Exception e) {
+                logger.warn("applyTextColorResource error resId = {},error:{} ",mTextColorResId,e.toString());
             }
         }
     }

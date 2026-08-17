@@ -480,7 +480,7 @@ public class SkinCompatManager extends SkinObservable {
             notifySkinChanged = true;
         }
         if(notifySkinChanged){
-            CUtilKt.callOnMain(0, null, () -> {
+            CUtilKt.callOnMain(0, null,null, () -> {
                 notifyUpdateSkin();
                 if(listener != null){
                     listener.onSuccess();
