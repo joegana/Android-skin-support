@@ -245,7 +245,8 @@ public class SkinActivityLifecycle implements Application.ActivityLifecycleCallb
             skinName = delegate.getSkinName();
         }
         if(skinName == null){
-            skinName = SkinCompatResources.getInstance().getSkinName();
+            boolean skinnable = skinableContext(context);
+            skinName = skinnable?SkinCompatResources.getInstance().getSkinName():"";
         }
         return  skinName;
     }
